@@ -105,6 +105,28 @@ def calculate_IDandVGS_state_6_p_channel(Vth, RSS, K, VT):
     return ID, VGS
 
 
+def calculate_IDandVGS_state_7_p_channel(VDD, RD, K, VT):
+    def equations(vars):
+        ID, VDS = vars
+        eq1 = ID - K * (VDS - abs(VT))**2
+        eq2 = VDS - (-VDD + ID * RD)
+        return [eq1, eq2]
+
+    initial_guess1 = [1, VDD - 1]
+    solution1 = fsolve(equations, initial_guess1)
+    ID1, VDS1 = solution1
+
+    initial_guess2 = [0.1, VDD - 0.1]
+    solution2 = fsolve(equations, initial_guess2)
+    ID2, VDS2 = solution2
+
+    if ID1 < ID2:
+        ID, VDS = ID1, VDS1
+    else:
+        ID, VDS = ID2, VDS2
+
+    return ID, VDS
+
 #calculate VDS
 def calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD):
     VDS = -VDD + (ID * RD)  
@@ -181,6 +203,16 @@ def state_6_p_channel(VDD, RD, RSS,RG1,RG2, K, VT):
         print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS},Vth={Vth}")
     else:
         print("Not Saturated")
+
+def state_7_p_channel(VDD, RD, RG ,K, VT):
+    VDS = VDD-ID*RD
+    VGS = VDS
+    ID , VGS  = calculate_IDandVGS_state_7_p_channel(VDS,K,VT)
+    if VDS < VGS - VT:
+        print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        print("Saturated")
+    else :
+        print("try again !") 
 #input
 def select_state():
     print("Please select one of the following states:")
@@ -245,6 +277,13 @@ def select_state():
         VT = get_float_input("Enter VT: ")
         state_6_p_channel(VDD, RD, RSS,RG1,RG2, K, VT)
 
+    elif selection == 7:
+        VDD = get_float_input("Enter VDD: ")
+        RD = get_float_input("Enter RD: ")
+        RG = get_float_input("Enter RG1 ")
+        K = get_float_input("Enter K: ")
+        VT = get_float_input("Enter VT: ")
+        state_7_p_channel(VDD, RD, RG,K, VT)
     else:
         print("Invalid choice!")
 

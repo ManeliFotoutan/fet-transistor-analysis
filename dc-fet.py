@@ -105,6 +105,27 @@ def calculate_IDandVGS_state_6(Vth, RSS, K, VT):
     
     return ID, VGS
 
+def calculate_IDandVGS_state_7(VDD, RD, K, VT):
+    def equations(vars):
+        ID, VDS = vars
+        eq1 = ID - K * (VDS - VT)**2
+        eq2 = VDS - (VDD - ID * RD)
+        return [eq1, eq2]
+
+    initial_guess1 = [1, VDD - 1]
+    solution1 = fsolve(equations, initial_guess1)
+    ID1, VDS1 = solution1
+
+    initial_guess2 = [0.1, VDD - 0.1]
+    solution2 = fsolve(equations, initial_guess2)
+    ID2, VDS2 = solution2
+
+    if ID1 < ID2:
+        ID, VDS = ID1, VDS1
+    else:
+        ID, VDS = ID2, VDS2
+
+    return ID, VDS
 
 #calculate VDS
 def calculate_VDS_state_1and2(VDD, ID, RD):
@@ -202,7 +223,16 @@ def state_6(VDD, RD, RSS,RG1,RG2, K, VT):
     else :
         print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Cutoff")
-        
+
+def state_7(VDD, RD, RG ,K, VT):
+    VDS = VDD-ID*RD
+    VGS = VDS
+    ID , VGS  = calculate_IDandVGS_state_7(VDS,K,VT)
+    if VDS> VGS - VT:
+        print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        print("Saturated")
+    else :
+        print("try again !")      
 #input
 def select_state():
     print("Please select one of the following states:")
@@ -212,6 +242,8 @@ def select_state():
     print("4: State 4")
     print("5: State 5")
     print("6: State 6")
+    print("7: State 7")
+
 
     selection = int(input("Your choice: "))
     
@@ -266,6 +298,14 @@ def select_state():
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
         state_6(VDD, RD, RSS,RG1,RG2, K, VT)
+
+    elif selection == 7:
+        VDD = get_float_input("Enter VDD: ")
+        RD = get_float_input("Enter RD: ")
+        RG = get_float_input("Enter RG1 ")
+        K = get_float_input("Enter K: ")
+        VT = get_float_input("Enter VT: ")
+        state_7(VDD, RD, RG,K, VT)
 
     else:
         print("Invalid choice!")
