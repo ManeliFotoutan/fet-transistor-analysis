@@ -11,7 +11,6 @@ def get_float_input(prompt):
 
 #calculate ID and VGS
 def calculate_ID_state_1(IDSS, VGS, VP0):
-    
     ID = IDSS * (1 - VGS / VP0)**2
     return ID
 
@@ -105,7 +104,7 @@ def calculate_IDandVGS_state_6(Vth, RSS, K, VT):
     
     return ID, VGS
 
-def calculate_IDandVGS_state_7(VDD, RD, K, VT):
+def calculate_IDandVDS_state_7(VDD, RD, K, VT):
     def equations(vars):
         ID, VDS = vars
         eq1 = ID - K * (VDS - VT)**2
@@ -126,6 +125,7 @@ def calculate_IDandVGS_state_7(VDD, RD, K, VT):
         ID, VDS = ID2, VDS2
 
     return ID, VDS
+
 
 #calculate VDS
 def calculate_VDS_state_1and2(VDD, ID, RD):
@@ -225,9 +225,8 @@ def state_6(VDD, RD, RSS,RG1,RG2, K, VT):
         print("Cutoff")
 
 def state_7(VDD, RD, RG ,K, VT):
-    VDS = VDD-ID*RD
+    ID , VDS  = calculate_IDandVDS_state_7(VDD,RD,K,VT)
     VGS = VDS
-    ID , VGS  = calculate_IDandVGS_state_7(VDS,K,VT)
     if VDS> VGS - VT:
         print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
@@ -302,7 +301,7 @@ def select_state():
     elif selection == 7:
         VDD = get_float_input("Enter VDD: ")
         RD = get_float_input("Enter RD: ")
-        RG = get_float_input("Enter RG1 ")
+        RG = get_float_input("Enter RG: ")
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
         state_7(VDD, RD, RG,K, VT)

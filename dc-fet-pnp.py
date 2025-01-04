@@ -104,28 +104,26 @@ def calculate_IDandVGS_state_6_p_channel(Vth, RSS, K, VT):
     
     return ID, VGS
 
-
-def calculate_IDandVGS_state_7_p_channel(VDD, RD, K, VT):
+def calculate_IDandVDS_state_7_p_channel(VDD, RD, K, VT):
     def equations(vars):
         ID, VDS = vars
-        eq1 = ID - K * (VDS - abs(VT))**2
-        eq2 = VDS - (-VDD + ID * RD)
+        eq1 = ID - K * (VDS - abs(VT))**2 
+        eq2 = VDS + (VDD - ID * RD)  
         return [eq1, eq2]
+   
+    initial_guess = [1,-1]
+    solution1 = fsolve(equations, initial_guess)
+    ID1 = solution1[0]
 
-    initial_guess1 = [1, VDD - 1]
-    solution1 = fsolve(equations, initial_guess1)
-    ID1, VDS1 = solution1
-
-    initial_guess2 = [0.1, VDD - 0.1]
+    initial_guess2 = [-1, 1]
     solution2 = fsolve(equations, initial_guess2)
-    ID2, VDS2 = solution2
+    ID2 = solution2[0]
 
-    if ID1 < ID2:
-        ID, VDS = ID1, VDS1
-    else:
-        ID, VDS = ID2, VDS2
+    ID = min(ID1, ID2)
+    VGS =- VDD + ID * RD 
+    
+    return ID, VGS
 
-    return ID, VDS
 
 #calculate VDS
 def calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD):
@@ -204,15 +202,17 @@ def state_6_p_channel(VDD, RD, RSS,RG1,RG2, K, VT):
     else:
         print("Not Saturated")
 
-def state_7_p_channel(VDD, RD, RG ,K, VT):
-    VDS = VDD-ID*RD
+def state_7_p_channel(VDD, RD, RG, K, VT):
+    ID, VDS = calculate_IDandVDS_state_7_p_channel(VDD, RD, K, VT)
     VGS = VDS
-    ID , VGS  = calculate_IDandVGS_state_7_p_channel(VDS,K,VT)
-    if VDS < VGS - VT:
-        print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+
+    if VDS >= VGS - abs(VT):
+        print(f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}")
         print("Saturated")
-    else :
-        print("try again !") 
+    else:
+        print("Operating in the linear region or invalid. Try again!")
+
+
 #input
 def select_state():
     print("Please select one of the following states:")
@@ -222,6 +222,8 @@ def select_state():
     print("4: State 4")
     print("5: State 5")
     print("6: State 6")
+    print("7: State 7")
+    
 
     selection = int(input("Your choice: "))
     
@@ -280,7 +282,7 @@ def select_state():
     elif selection == 7:
         VDD = get_float_input("Enter VDD: ")
         RD = get_float_input("Enter RD: ")
-        RG = get_float_input("Enter RG1 ")
+        RG = get_float_input("Enter RG: ")
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
         state_7_p_channel(VDD, RD, RG,K, VT)
