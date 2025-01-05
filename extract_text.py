@@ -2,7 +2,7 @@ from PIL import Image
 import pytesseract
 import re
 
-def simple_circuit():
+def simple_circuit(image_path):
     pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust this path if necessary
 
     image_path = 'try1.jpg'
@@ -29,7 +29,7 @@ def simple_circuit():
     return VDD, VGG, RD
 
 
-def circuit():
+def circuit(image_path):
     pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust this path if necessary
 
     image_path = 'try1.jpg'
@@ -56,7 +56,7 @@ def circuit():
     return VDD, RD, RS
 
 
-def complex_circuit():
+def complex_circuit(image_path):
     pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust this path if necessary
 
     image_path = 'try2.jpg'

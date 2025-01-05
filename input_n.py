@@ -27,52 +27,51 @@ def select_state():
     # Updated part in select_state function to allow file input for image extraction
     if selection == 0:
         image_path = input("Enter the path of the image file: ")
-        circuit_type = int(input("Select circuit type:\n1: Simple\n2: Complex\n3: Circuit\nYour choice: "))
+        circuit_type = int(input("Select circuit type:(from 1 to 6 satates)"))
 
         if circuit_type == 1:
             VDD, VGG, RD = extract_text.simple_circuit(image_path)
             if VDD is not None:
                 IDSS = get_float_input("Enter IDSS: ")
                 VPO = get_float_input("Enter VPO: ")
-                dc_fet.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
+                dc_fet.state_1(VDD, VGG, RD, IDSS, VPO)
 
-        if circuit_type == 2:
+        elif circuit_type == 2:
             VDD, VGG, RD = extract_text.simple_circuit(image_path)
             if VDD is not None:
-                K = get_float_input("Enter IDSS: ")
-                VT = get_float_input("Enter VPO: ")
-                dc_fet.state_1_p_channel(VDD, VGG, RD, K, VT)
+                K = get_float_input("Enter K: ")
+                VT = get_float_input("Enter VT: ")
+                dc_fet.state_2(VDD, VGG, RD, K, VT)
 
         elif circuit_type == 3:
             VDD, RD, RS = extract_text.circuit(image_path)
             if VDD is not None:
-                K = get_float_input("Enter K: ")
-                VT = get_float_input("Enter VT: ")
-                dc_fet.state_2_p_channel(VDD, RD, RS, K, VT)
+                IDSS = get_float_input("Enter IDSS: ")
+                VPO = get_float_input("Enter VPO: ")
+                dc_fet.state_3(VDD, RD, RS, IDSS, VPO)
 
         elif circuit_type == 4:
             VDD, RD, RS = extract_text.circuit(image_path)
             if VDD is not None:
-                IDSS = get_float_input("Enter IDSS: ")
-                VPO = get_float_input("Enter VPO: ")
-                dc_fet.state_2_p_channel(VDD, RD, RS, IDSS, VPO)
+                K = get_float_input("Enter K: ")
+                VT = get_float_input("Enter VT: ")
+                dc_fet.state_4(VDD, RD, RS, K, VT)
 
         elif circuit_type == 5:
             VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
             if VDD is not None:
                 IDSS = get_float_input("Enter IDSS: ")
                 VPO = get_float_input("Enter VPO: ")
-                dc_fet.state_5_p_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
+                dc_fet.state_5(VDD, RD, RG1, RG2, RS, IDSS, VPO)
 
         elif circuit_type == 6:
             VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
             if VDD is not None:
                 K = get_float_input("Enter K: ")
                 VT = get_float_input("Enter VT: ")
-                dc_fet.state_5_p_channel(VDD, RD, RG1, RG2, RS, K, VT)
+                dc_fet.state_5(VDD, RD, RG1, RG2, RS, K, VT)
         else:
             print("Invalid choice for circuit type!")
-
 
 
     elif selection == 1:
