@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import fsolve
+import dc_fet_gui
 
 #input
 def get_float_input(prompt):
@@ -327,5 +328,33 @@ def select_state():
 
     else:
         print("Invalid choice!")
+        
+def solve_dc_fet_problem(state, params):
+    if state == 1:
+        VGG, VDD, RD, IDSS, VP0 = params
+        state_1(VGG, VDD, RD, IDSS, VP0)
+    elif state == 2:
+        VGG, VDD, RD, K, VT = params
+        state_2(VGG, VDD, RD, K, VT)
+    elif state == 3:
+        RSS, VDD, RD, IDSS, VP0 = params
+        state_3(RSS, VDD, RD, IDSS, VP0)
+    elif state == 4:
+        RSS, VDD, RD, K, VT = params
+        state_4(RSS, VDD, RD, K, VT)
+    elif state == 5:
+        RSS, VDD, RD, RG1, RG2, IDSS, VP0 = params
+        state_5(VDD, RD, RSS, RG1, RG2, IDSS, VP0)
+    elif state == 6:
+        VDD, RD, RSS, RG1, RG2, K, VT = params
+        state_6(VDD, RD, RSS, RG1, RG2, K, VT)
+    elif state == 7:
+        VDD, RD, RG, K, VT = params
+        state_7(VDD, RD, RG, K, VT)
+    else:
+        print("Invalid state selected!")
 
-select_state()
+# select_state()
+
+if __name__ == "__main__":
+    dc_fet_gui.launch_gui(solve_dc_fet_problem)
