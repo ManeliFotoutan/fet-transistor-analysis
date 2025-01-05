@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import fsolve
+from sympy import symbols, Eq, solve
 
 #input
 def get_float_input(prompt):
@@ -123,7 +124,6 @@ def calculate_IDandVDS_state_7_p_channel(VDD, RD, K, VT):
     VGS =- VDD + ID * RD 
     
     return ID, VGS
-
 
 #calculate VDS
 def calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD):
