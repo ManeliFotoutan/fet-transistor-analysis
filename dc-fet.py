@@ -126,13 +126,21 @@ def calculate_IDandVDS_state_7(VDD, RD, K, VT):
 
     return ID, VDS
 
+def calculate_ID_S1_not_saturated(IDSS, VGS, VP0,VDS):
+    ID = IDSS * (2 *(VGS / VP0 - 1)*(VDS // VP0) - (VDS // VP0)**2 )
+    return ID
+
+def calculate_ID_S2_not_saturated(K ,VDS, VT):
+    ID = K * (2 * (VDS-VT) - (VDS)**2)
+    return ID
+
 
 #calculate VDS
 def calculate_VDS_state_1and2(VDD, ID, RD):
     VDS = VDD - (ID * RD)  
     return VDS
 
-def calculate_VDS_state(VDD, ID, RD , RSS):
+def calculate_VDS_Other_states(VDD, ID, RD , RSS):
     VDS = VDD - ID * (RSS+RD) 
     return VDS
 
@@ -148,12 +156,13 @@ def state_1(VGG, VDD, RD, IDSS, VP0):
     if VDS> VGS - VP0:
         print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VP0 :
-        print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")          
     else:
-        print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+        ID = calculate_ID_S1_not_saturated(IDSS, VDS, VP0 , VDS)
+        if VDS > 0 and VDS < VGS - VP0 :
+            print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")
+        else:
+            print("Cutoff")
 
 def state_2(VGG, VDD, RD, K, VT):
     VGS = -VGG  
@@ -162,67 +171,77 @@ def state_2(VGG, VDD, RD, K, VT):
     if VDS> VGS - VT :
         print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VT :
-        print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")
-    else :
-        print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+    else:
+        ID = calculate_ID_S2_not_saturated(K ,VDS, VT)
+        if VDS > 0 and VDS < VGS - VT :
+            print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")
+        else :
+            # print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Cutoff")
 
 def state_3(RSS, VDD, RD, IDSS, VP0):
     ID , VGS  = calculate_IDandVGS_state_3(IDSS, RSS, VP0)
-    VDS = calculate_VDS_state(VDD, ID, RD , RSS)
+    VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS > VGS - VP0:
         print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VP0 :
-        print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")
     else:
-        print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+        ID = calculate_ID_S1_not_saturated(IDSS, VDS, VP0 , VDS)
+        if VDS > 0 and VDS < VGS - VP0 :
+            print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")
+        else:
+            # print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Cutoff")
 
 
 def state_4(RSS, VDD, RD, K, VT):
     ID , VGS  = calculate_IDandVGS_state_4(K, RSS, VT)
-    VDS = calculate_VDS_state(VDD, ID, RD , RSS)
+    VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VT:
         print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VT :
-        print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")
-    else :
-        print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+    else:
+        ID = calculate_ID_S2_not_saturated(K ,VDS, VT)
+        if VDS > 0 and VDS < VGS - VT :
+            print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")
+        else :
+            # print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Cutoff")
 
 def state_5(VDD, RD, RSS,RG1,RG2,IDSS, VP0):
     Vth=calculate_Vth(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_5(Vth,RSS,IDSS,VP0)
-    VDS = calculate_VDS_state(VDD, ID, RD , RSS)
+    VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VP0:
         print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VP0 :
-        print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")          
     else:
-        print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+        ID = calculate_ID_S1_not_saturated(IDSS, VDS, VP0 , VDS)
+        if VDS > 0 and VDS < VGS - VP0 :
+            print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")          
+        else:
+            # print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Cutoff")
 
 def state_6(VDD, RD, RSS,RG1,RG2, K, VT):
     Vth=calculate_Vth(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_6(Vth,RSS,K,VT)
-    VDS = calculate_VDS_state(VDD, ID, RD , RSS)
+    VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VT:
         print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
         print("Saturated")
-    elif VDS > 0 and VDS < VGS - VT :
-        print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Ohmic")
-    else :
-        print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Cutoff")
+    else:
+        ID = calculate_ID_S2_not_saturated(K ,VDS, VT)
+        if VDS > 0 and VDS < VGS - VT :
+            print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Ohmic")
+        else :
+            # print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+            print("Cutoff")
 
 def state_7(VDD, RD, RG ,K, VT):
     ID , VDS  = calculate_IDandVDS_state_7(VDD,RD,K,VT)
