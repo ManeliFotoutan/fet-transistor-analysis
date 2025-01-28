@@ -103,7 +103,7 @@ def calculate_IDandVDS_state_7_p_channel(VDD, RD, K, VT):
         eq1 = ID - K * (VDS - abs(VT))**2 
         eq2 = VDS + (VDD - ID * RD)  
         return [eq1, eq2]
-   
+
     initial_guess = [1,-1]
     solution1 = fsolve(equations, initial_guess)
     ID1 = solution1[0]
@@ -136,71 +136,72 @@ def state_1_p_channel(VDD, VGG, RD, IDSS, VPO):
     ID = calculate_ID_state_1_p_channel(IDSS, VGS, VPO)
     VDS = calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD)
     if VDS <= VGS - abs(VPO):
-        print("Saturated")
-        print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        result = "Saturated"
+        details = f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}"
     else:
-        print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        details = f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}"
 
-        print("Not Saturated")
+        result = "Not Saturated"
 
 def state_2_p_channel(VDD, VGG, RD, K, VT):
     VGS = VGG  
     ID = calculate_ID_state_2_p_channel(K, VT)
     VDS = calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD)
     if VDS < VGS - VT:
-        print("Saturated")
-        print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        result = "Saturated"
+        details = f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}"
     else:
-        print("Not Saturated")
+        result = "Not Saturated"
 
 def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
     ID, VGS = calculate_IDandVGS_state_3_p_channel(IDSS, RSS, VPO)
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD, RSS)   
     if VDS <= VGS - abs(VPO):
-        print("Saturated")
-        print(f"State 3 with VGS ={VGS}, ID={ID}, VDS={VDS}")
+        result = "Saturated"
+        details = f"State 3 with VGS ={VGS}, ID={ID}, VDS={VDS}"
     else:
-        print("Not Saturated")
-        print(f"State 3 with VGS ={VGS}, ID={ID}, VDS={VDS}")
+        result = "Not Saturated"
+        details = f"State 3 with VGS ={VGS}, ID={ID}, VDS={VDS}"
 
 
 def state_4_p_channel(VDD, RD, RSS, K, VT):
     ID , VSG  = calculate_IDandVGS_state_5_p_channel(K, RSS, VT)
     VSD = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VSD > abs(VSG - VT):
-        print("Saturated")
-        print(f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}")
+        result = "Saturated"
+        details = f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}"
     else:
-        print("Not Saturated")
+        result = "Not Saturated"
 
 def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
     Vth=calculate_Vth_p_channel(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_5_p_channel(Vth,RSS,IDSS,VPO)
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VDS> VGS - VPO:
-        print("Saturated")
-        print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
+        result = "Saturated"
+        details = f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
     else:
-        print("Not Saturated")
-        print(f"State 3 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}")
+        result = "Not Saturated"
+        details = f"State 3 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
 
 def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
     Vth=calculate_Vth_p_channel(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_6_p_channel(Vth,RSS,K,VT)
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VDS> VGS - VT:
-        print("Saturated")
-        print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS},Vth={Vth}")
+        result = "Saturated"
+        details = f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS},Vth={Vth}"
+        
     else:
-        print("Not Saturated")
+        result = "Not Saturated"
 
 def state_7_p_channel(VDD, RD, RG, K, VT):
     ID, VDS = calculate_IDandVDS_state_7_p_channel(VDD, RD, K, VT)
     VGS = VDS
 
     if VDS >= VGS - abs(VT):
-        print(f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}")
-        print("Saturated")
+        details = f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}"
+        result = "Saturated"
     else:
         print("Operating in the linear region or invalid. Try again!")
 
