@@ -60,7 +60,7 @@ def select_state():
             if VDD is not None:
                 IDSS = get_float_input("Enter IDSS: ")
                 VPO = get_float_input("Enter VPO: ")
-                dc_fet_pnp.state_5_p_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
+                r=dc_fet_pnp.state_5_p_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
 
         elif circuit_type == 6:
             VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)

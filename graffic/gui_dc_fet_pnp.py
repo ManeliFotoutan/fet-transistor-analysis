@@ -188,7 +188,7 @@ def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
         details = f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}"
     else:
         result = "Not Saturated"
-        details = "State 5 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
     return result, details
 
 def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
@@ -200,6 +200,7 @@ def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
         details = f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS},Vth={Vth}"
     else:
         result = "Not Saturated"
+        details = f"State 5 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
     return result, details
 
 def state_7_p_channel(VDD, RD, RG, K, VT):

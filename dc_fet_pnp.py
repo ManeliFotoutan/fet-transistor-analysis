@@ -174,15 +174,18 @@ def state_4_p_channel(VDD, RD, RSS, K, VT):
         result = "Not Saturated"
 
 def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
-    Vth=calculate_Vth_p_channel(VDD,RG1,RG2)
-    ID , VGS  = calculate_IDandVGS_state_5_p_channel(Vth,RSS,IDSS,VPO)
-    VDS = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
-    if VDS> VGS - VPO:
+    Vth = calculate_Vth_p_channel(VDD, RG1, RG2)
+    ID, VGS = calculate_IDandVGS_state_5_p_channel(Vth, RSS, IDSS, VPO)
+    VDS = calculate_VDS_state_p_channel(VDD, ID, RD, RSS)
+    
+    if VDS > VGS - VPO:
         result = "Saturated"
-        details = f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5: Vth = {Vth}, VGS = {VGS}, ID = {ID}, VDS = {VDS}"
     else:
         result = "Not Saturated"
-        details = f"State 3 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5: Vth = {Vth}, VGS = {VGS}, ID = {ID}, VDS = {VDS}"
+    
+
 
 def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
     Vth=calculate_Vth_p_channel(VDD,RG1,RG2)

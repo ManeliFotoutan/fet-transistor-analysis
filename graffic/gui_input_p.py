@@ -22,18 +22,6 @@ def on_leave(e):
     e.widget.config(bg=BUTTON_COLOR)
     
 def get_float_inputs(prompts):
-    """
-    Helper to show a form dialog for multiple float inputs.
-
-    Args:
-        prompts (list): A list of prompt strings for the input fields.
-
-    Returns:
-        dict: A dictionary with prompt strings as keys and their corresponding float values as values.
-
-    Raises:
-        ValueError: If the user cancels or provides invalid inputs.
-    """
     # Create a modal form window
     form_window = tk.Toplevel()
     form_window.title("Input of Circuit")
@@ -128,91 +116,59 @@ def select_state():
         if state == 0:
             image_path = filedialog.askopenfilename(title="Select Image File")
             if not image_path:
-                raise ValueError("No image selected!")
-
+                messagebox.showerror("Error", "No image selected!")
+                return
+            
             img = Image.open(image_path)
             img_display = ImageTk.PhotoImage(img)
 
-            # Create a new window to display the image
             img_window = tk.Toplevel()
             img_window.title("Circuit Image")
             img_label = tk.Label(img_window, image=img_display)
+            img_label.image = img_display 
             img_label.pack()
-            img_window.mainloop()
+            
+            circuit_type_input = get_float_inputs(["Enter Circuit Type (1-6):"])
+            circuit_type = int(next(iter(circuit_type_input.values()), None))
 
-            # Select circuit type (1-6)
-            circuit_type = askinteger("Circuit Type", "Enter Circuit Type (1-6):")
-            if circuit_type == 1:
-                VDD, VGG, RD = extract_text.simple_circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet_pnp.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
-                    show_output(result, details)
+            if circuit_type not in range(1, 7):
+                circuit_type = None
 
-            elif circuit_type == 2:
-                VDD, VGG, RD = extract_text.simple_circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet_pnp.state_2_p_channel(VDD, VGG, RD, K, VT)
-                    show_output(result, details)
+            if not circuit_type or circuit_type not in range(1, 7):
+                messagebox.showerror("Error", "Invalid Circuit Type!")
+                return
 
-            elif circuit_type == 3:
-                VDD, RD, RS = extract_text.circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result ,details = gui_dc_fet_pnp.state_3_p_channel(VDD, RD, RS, IDSS, VPO)
-                    show_output(result, details)
+            circuit_extractors = [extract_text.simple_circuit, extract_text.circuit, extract_text.complex_circuit]
+            extract_func = circuit_extractors[min(circuit_type-1, 2)]
+            circuit_values = extract_func(image_path)
 
-            elif circuit_type == 4:
-                VDD, RD, RS = extract_text.circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet_pnp.state_4_p_channel(VDD, RD, RS, K, VT)
-                    show_output(result, details)
+            if circuit_values[0] is None:
+                messagebox.showerror("Error", "Failed to extract circuit values.")
+                return
+            
+            param_prompts = {
+                1: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                2: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
+                3: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                4: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
+                5: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                6: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"]
+            }
+            
+            inputs = get_float_inputs(param_prompts[circuit_type])
+            
+            function_map = {
+                1: gui_dc_fet_pnp.state_1_p_channel,
+                2: gui_dc_fet_pnp.state_2_p_channel,
+                3: gui_dc_fet_pnp.state_3_p_channel,
+                4: gui_dc_fet_pnp.state_4_p_channel,
+                5: gui_dc_fet_pnp.state_5_p_channel,
+                6: gui_dc_fet_pnp.state_6_p_channel
+            }
+            
+            result, details = function_map[circuit_type](*circuit_values, *inputs.values())
+            show_output(result, details)
 
-            elif circuit_type == 5:
-                VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet_pnp.state_5_p_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
-                    show_output(result , details)
-
-            elif circuit_type == 6:
-                VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet_pnp.state_6_p_channel(VDD, RD, RG1, RG2, RS, K, VT)
-                    show_output(result, details)
         else:
             if state == 1:
                 prompts = [
