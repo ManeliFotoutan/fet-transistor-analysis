@@ -88,7 +88,7 @@ def main_gui():
 
     manual_button = tk.Button(
         root,
-        text="Manual Input",
+        text="Input Circuit",
         command=handle_manual_input,
         bg=BUTTON_COLOR,
         fg=FG_COLOR,

@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import messagebox , simpledialog , filedialog
 from functools import partial
 import gui_dc_fet
+from PIL import Image, ImageTk
+import extract_text
 
 # Define global styles
 BG_COLOR = "#1E1E2F"
@@ -127,7 +129,19 @@ def select_state():
             image_path = filedialog.askopenfilename(title="Select Image File")
             if not image_path:
                 raise ValueError("No image selected!")
-            circuit_type = int(circuit_type_var.get())
+
+            img = Image.open(image_path)
+            img_display = ImageTk.PhotoImage(img)
+
+            # Create a new window to display the image
+            img_window = tk.Toplevel()
+            img_window.title("Circuit Image")
+            img_label = tk.Label(img_window, image=img_display)
+            img_label.pack()
+            img_window.mainloop()
+
+            # Select circuit type (1-6)
+            circuit_type = askinteger("Circuit Type", "Enter Circuit Type (1-6):")
             if circuit_type not in range(1, 7):
                 raise ValueError("Invalid circuit type!")
             if circuit_type == 1:
