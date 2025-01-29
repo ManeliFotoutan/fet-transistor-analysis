@@ -216,7 +216,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet_pnp.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
+                result , details = gui_dc_fet_pnp.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 2:
@@ -232,7 +232,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet_pnp.state_2_p_channel(VDD, VGG, RD, K, VT)
+                result , details = gui_dc_fet_pnp.state_2_p_channel(VDD, VGG, RD, K, VT)
                 show_output(result, details)
 
             elif state == 3:
@@ -248,7 +248,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet_pnp.state_3_p_channel(VDD, RD, RSS, IDSS, VPO)
+                result , details = gui_dc_fet_pnp.state_3_p_channel(VDD, RD, RSS, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 4:
@@ -264,7 +264,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet_pnp.state_4_p_channel(VDD, RD , RSS, K, VT)
+                result , details = gui_dc_fet_pnp.state_4_p_channel(VDD, RD , RSS, K, VT)
                 show_output(result, details)
                 
             elif state == 5:
@@ -285,7 +285,7 @@ def select_state():
                 RG2 = inputs["Enter RG2 (Gate Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet_pnp.state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO)
+                result , details = gui_dc_fet_pnp.state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO)
                 show_output(result, details)
 
             elif state == 6:
@@ -306,7 +306,7 @@ def select_state():
                 RG2 = inputs["Enter RG2 (Gate Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet_pnp.state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT)
+                result , details = gui_dc_fet_pnp.state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT)
                 show_output(result, details)
 
             elif state == 7:
@@ -323,24 +323,7 @@ def select_state():
                 RG = inputs["Enter RG (Gate Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet_pnp.state_7_p_channel(VDD, RD, RG, K, VT)
-                show_output(result, details)
-
-            elif state == 8:
-                prompts = [
-                    "Enter VDD (Supply Voltage) : ",
-                    "Enter RD(Drain Resistance) : ",
-                    "Enter RG (Gate Resistance) : ",
-                    "Enter IDSS (Gate-Source Leakage Current) : ",
-                    "Enter VPO (Pinch-off Voltage) : "
-                ]
-                inputs = get_float_inputs(prompts)
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD(Drain Resistance) : "]
-                RG = inputs["Enter RG (Gate Resistance) : "]
-                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
-                VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet_pnp.state_8_p_channel(VDD, RD, RG, IDSS, VPO)
+                result , details = gui_dc_fet_pnp.state_7_p_channel(VDD, RD, RG, K, VT)
                 show_output(result, details)
                 
             else:
@@ -375,10 +358,9 @@ def select_state():
         5: "State 5: Description for State 5",
         6: "State 6: Description for State 6",
         7: "State 7: Description for State 7",
-        8: "State 8: Description for State 8"
     }
-    # Create buttons for each state (1 to 8)
-    for i in range(1, 9):  # States 1 to 8
+    # Create buttons for each state (1 to 7)
+    for i in range(1, 8):  # States 1 to 7
         tk.Button(
             root,
             text=f"{i}: {state_texts[i]}",

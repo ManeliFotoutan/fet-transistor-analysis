@@ -165,7 +165,7 @@ def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
 
 
 def state_4_p_channel(VDD, RD, RSS, K, VT):
-    ID , VSG  = calculate_IDandVGS_state_5_p_channel(K, RSS, VT)
+    ID , VSG  = calculate_IDandVGS_state_4_p_channel(K, RSS, VT)
     VSD = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VSD > abs(VSG - VT):
         result = "Saturated"

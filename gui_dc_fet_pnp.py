@@ -169,13 +169,14 @@ def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
     return result, details
 
 def state_4_p_channel(VDD, RD, RSS, K, VT):
-    ID , VSG  = calculate_IDandVGS_state_5_p_channel(K, RSS, VT)
+    ID , VSG  = calculate_IDandVGS_state_4_p_channel(K, RSS, VT)
     VSD = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VSD > abs(VSG - VT):
         result = "Saturated"
         details = f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}"
     else:
         result = "Not Saturated"
+        details = f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}"
     return result, details
 
 def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
@@ -210,4 +211,5 @@ def state_7_p_channel(VDD, RD, RG, K, VT):
         details = f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}"
     else:
         result = "Operating in the linear region or invalid. Try again!"
-        
+        details = f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}"
+    return result, details
