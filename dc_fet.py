@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.optimize import fsolve
-import dc_fet_gui
 from sympy import symbols, Eq, solve
 import extract_text
 

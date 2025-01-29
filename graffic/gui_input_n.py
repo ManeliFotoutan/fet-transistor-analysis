@@ -140,7 +140,7 @@ def select_state():
                     
                     IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
                     VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
+                    result , details = gui_dc_fet.state_1_n_channel(VDD, VGG, RD, IDSS, VPO)
                     show_output(result, details)
 
             elif circuit_type == 2:
@@ -151,7 +151,7 @@ def select_state():
                     inputs = get_float_inputs(prompts)
                     K = inputs("Enter K (transconductance parameter) : ")
                     VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_2_p_channel(VDD, VGG, RD, K, VT)
+                    result , details = gui_dc_fet.state_2_n_channel(VDD, VGG, RD, K, VT)
                     show_output(result, details)
 
             elif circuit_type == 3:
@@ -164,7 +164,7 @@ def select_state():
                     
                     IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
                     VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result ,details = gui_dc_fet.state_3_p_channel(VDD, RD, RS, IDSS, VPO)
+                    result ,details = gui_dc_fet.state_3_n_channel(VDD, RD, RS, IDSS, VPO)
                     show_output(result, details)
 
             elif circuit_type == 4:
@@ -175,7 +175,7 @@ def select_state():
                     inputs = get_float_inputs(prompts)
                     K = inputs("Enter K (transconductance parameter) : ")
                     VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_4_p_channel(VDD, RD, RS, K, VT)
+                    result , details = gui_dc_fet.state_4_n_channel(VDD, RD, RS, K, VT)
                     show_output(result, details)
 
             elif circuit_type == 5:
@@ -188,7 +188,7 @@ def select_state():
                     
                     IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
                     VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet.state_5_p_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
+                    result , details = gui_dc_fet.state_5_n_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
                     show_output(result , details)
 
             elif circuit_type == 6:
@@ -199,7 +199,7 @@ def select_state():
                     inputs = get_float_inputs(prompts)
                     K = inputs("Enter K (transconductance parameter) : ")
                     VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_6_p_channel(VDD, RD, RG1, RG2, RS, K, VT)
+                    result , details = gui_dc_fet.state_6_n_channel(VDD, RD, RG1, RG2, RS, K, VT)
                     show_output(result, details)
         else:
             if state == 1:
@@ -216,7 +216,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet.state_1_p_channel(VDD, VGG, RD, IDSS, VPO)
+                result, details = gui_dc_fet.state_1_n_channel(VDD, VGG, RD, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 2:
@@ -232,7 +232,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet.state_2_p_channel(VDD, VGG, RD, K, VT)
+                result, details = gui_dc_fet.state_2_n_channel(VDD, VGG, RD, K, VT)
                 show_output(result, details)
 
             elif state == 3:
@@ -248,7 +248,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet.state_3_p_channel(VDD, RD, RSS, IDSS, VPO)
+                result, details = gui_dc_fet.state_3_n_channel(VDD, RD, RSS, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 4:
@@ -264,7 +264,7 @@ def select_state():
                 RD = inputs["Enter RD (Drain Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet.state_4_p_channel(VDD, RD , RSS, K, VT)
+                result, details = gui_dc_fet.state_4_n_channel(VDD, RD , RSS, K, VT)
                 show_output(result, details)
                 
             elif state == 5:
@@ -285,7 +285,7 @@ def select_state():
                 RG2 = inputs["Enter RG2 (Gate Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet.state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO)
+                result, details = gui_dc_fet.state_5_n_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO)
                 show_output(result, details)
 
             elif state == 6:
@@ -306,7 +306,7 @@ def select_state():
                 RG2 = inputs["Enter RG2 (Gate Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet.state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT)
+                result, details = gui_dc_fet.state_6_n_channel(VDD, RD, RG1, RG2, RSS, K, VT)
                 show_output(result, details)
 
             elif state == 7:
@@ -323,7 +323,7 @@ def select_state():
                 RG = inputs["Enter RG (Gate Resistance) : "]
                 K = inputs["Enter K (transconductance parameter) : "]
                 VT = inputs["Enter VT (voltage transformer) : "]
-                result, details = gui_dc_fet.state_7_p_channel(VDD, RD, RG, K, VT)
+                result, details = gui_dc_fet.state_7_n_channel(VDD, RD, RG, K, VT)
                 show_output(result, details)
 
             elif state == 8:
@@ -340,7 +340,7 @@ def select_state():
                 RG = inputs["Enter RG (Gate Resistance) : "]
                 IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
                 VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
-                result, details = gui_dc_fet.state_8_p_channel(VDD, RD, RG, IDSS, VPO)
+                result, details = gui_dc_fet.state_8_n_channel(VDD, RD, RG, IDSS, VPO)
                 show_output(result, details)
                 
             else:

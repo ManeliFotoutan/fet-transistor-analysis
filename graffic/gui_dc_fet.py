@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.optimize import fsolve
-import dc_fet_gui
 from sympy import symbols, Eq, solve
 import extract_text
 
@@ -276,115 +275,127 @@ def calculate_Vth(VDD,RG1,RG2):
     return VDD*(RG2/(RG1+RG2))
 
 #States
-def state_1(VDD,VGG,RD, IDSS, VPO):
+def state_1_n_channel(VDD,VGG,RD, IDSS, VPO):
     VGS = -VGG  
     ID = calculate_ID_state_1(IDSS, VGS, VPO)
     VDS = calculate_VDS_state_1and2(VDD, ID, RD)
     if VDS> VGS - VPO and ID !=0:
-        print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else:
         VDS,VGS,ID = calculate_not_saturated_parameters_state1(VDD,VGG,RD, IDSS, VPO)
         if VDS > 0 and VDS < VGS - VPO :
-            print(f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")
+            details = f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"
         else:
-            print("Cutoff")
+            result = "Cuttoff"
+            details =""
+        return result , details
 
-def state_2(VGG, VDD, RD, K, VT):
+def state_2_n_channel(VGG, VDD, RD, K, VT):
     VGS = -VGG  
     ID = calculate_ID_state_2(K, VT)
     VDS = calculate_VDS_state_1and2(VDD, ID, RD)
     if VDS> VGS - VT and ID !=0:
-        print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
+
     else:
         VDS,VGS,ID = calculate_not_saturated_parameters_state2(VGG, VDD, RD, K, VT)
         if VDS > 0 and VDS < VGS - VT :
-            print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")
+            details = f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"
         else :
-            # print(f"State 2 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Cutoff")
+            details = ""
+            result = "Cuttoff"
+    return result , details
 
-def state_3(VDD,RD,RSS, IDSS, VPO):
+def state_3_n_channel(VDD,RD,RSS, IDSS, VPO):
     ID , VGS  = calculate_IDandVGS_state_3(IDSS, RSS, VPO)
     VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS > VGS - VPO and ID !=0:
-        print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else:
         VDS,VGS,ID = calculate_not_saturated_parameters_state3(VDD,RD,RSS, IDSS, VPO)
         if VDS > 0 and VDS < VGS - VPO :
-            print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")
+            details = f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"
         else:
-            # print(f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Cutoff")
+            details = ""
+            result = "Cuttoff"
+    return result , details
 
-
-def state_4(RSS, VDD, RD, K, VT):
+def state_4_n_channel(RSS, VDD, RD, K, VT):
     ID , VGS  = calculate_IDandVGS_state_4(K, RSS, VT)
     VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VT and ID !=0:
-        print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else:
         ID = calculate_not_saturated_parameters_state4(RSS, VDD, RD, K, VT)
         if VDS > 0 and VDS < VGS - VT :
-            print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")
+            details = f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"
         else :
-            # print(f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Cutoff")
+            details = f"State 4 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Cuttoff"
+    return result , details
 
-def state_5(VDD,RD,RG1,RG2,RSS,IDSS, VPO):
+def state_5_n_channel(VDD,RD,RG1,RG2,RSS,IDSS, VPO):
     Vth=calculate_Vth(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_5(Vth,RSS,IDSS,VPO)
     VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VPO and ID !=0:
-        print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else:
         ID = calculate_not_saturated_parameters_state5(VDD, RD, RSS,Vth,IDSS, VPO)
         if VDS > 0 and VDS < VGS - VPO :
-            print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")          
+            details = f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"          
         else:
-            print(f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Cutoff")
+            details = ""
+            result = "Cuttoff"
+    return result , details
 
-def state_6(VDD,RD,RG1,RG2,RSS, K, VT):
+def state_6_n_channel(VDD,RD,RG1,RG2,RSS, K, VT):
     Vth=calculate_Vth(VDD,RG1,RG2)
     ID , VGS  = calculate_IDandVGS_state_6(Vth,RSS,K,VT)
     VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VT and ID !=0:
-        print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else:
         ID = calculate_not_saturated_parameters_state6(VDD,RD,RSS,Vth, K, VT)
         if VDS > 0 and VDS < VGS - VT :
-            print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Ohmic")
+            details = f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+            result = "Ohmic"
         else :
-            # print(f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-            print("Cutoff")
+            details = ""
+            result = "Cuttoff"
+            
+    return result , details
 
-def state_7(VDD, RD, RG ,K, VT):
+def state_7_n_channel(VDD, RD, RG ,K, VT):
     ID , VDS  = calculate_IDandVDS_state_7(VDD,RD,K,VT)
     VGS = VDS
     if VDS> VGS - VT:
-        print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else :
-        print("try again !")      
+        result = "Try Again" 
+        details = ""
+    return result , details
 
 
-def state_8(VDD, RD, RG,IDSS, VP):
+def state_8_n_channel(VDD, RD, RG,IDSS, VP):
     ID , VDS  = calculate_IDandVDS_state_8(VDD,RD,IDSS,VP)
     VGS = VDS
     if VDS> VGS - VP:
-        print(f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}")
-        print("Saturated")
+        details = f"State 7 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        result = "Saturated"
     else :
-        print("try again !") 
+        result = "Try Again"
+        details = ""
+    return result , details
