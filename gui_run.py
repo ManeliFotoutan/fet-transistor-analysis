@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import gui_input_p
-import input_n
+import gui_input_n
 
 # Define global styles
 BG_COLOR = "#1E1E2F"
@@ -21,7 +21,7 @@ def handle_manual_input():
     """Handles the manual input selection."""
     def handle_selection(selection):
         if selection == "n-channel":
-            input_n.select_state()
+            gui_input_n.select_state()
         elif selection == "p-channel":
             gui_input_p.select_state()
         else:
