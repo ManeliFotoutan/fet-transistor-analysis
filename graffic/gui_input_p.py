@@ -111,7 +111,6 @@ def show_output(result, details):
 
     
 def select_state():
-    """Handles the GUI for selecting one of the 9 states."""
     def handle_selection(state):
         if state == 0:
             image_path = filedialog.askopenfilename(title="Select Image File")
@@ -127,7 +126,7 @@ def select_state():
             img_label = tk.Label(img_window, image=img_display)
             img_label.image = img_display 
             img_label.pack()
-            
+
             circuit_type_input = get_float_inputs(["Enter Circuit Type (1-6):"])
             circuit_type = int(next(iter(circuit_type_input.values()), None))
 
@@ -309,7 +308,7 @@ def select_state():
 
     tk.Button(
     root,
-    text="0: Use picture for extracting values",
+    text="Give picture",
     command=lambda: handle_selection(0),
     bg=BUTTON_COLOR,
     fg=FG_COLOR,
@@ -319,13 +318,13 @@ def select_state():
     height=2
     ).pack(pady=10)
     state_texts = {
-        1: "State 1 ():",
-        2: "State 2: Description for State 2",
-        3: "State 3: Description for State 3",
-        4: "State 4: Description for State 4",
-        5: "State 5: Description for State 5",
-        6: "State 6: Description for State 6",
-        7: "State 7: Description for State 7",
+        1: "VGG in JFET and Depletion MOSFET",
+        2: "VGG in Enhancement MOSFET",
+        3: "RSS in JFET and Depletion MOSFET",
+        4: "RSS in Enhancement MOSFET",
+        5: "RG1, RG2 in JFET and Depletion MOSFET",
+        6: "RG1, RG2 in Enhancement MOSFET",
+        7: "Biasing Circuit",
     }
     # Create buttons for each state (1 to 7)
     for i in range(1, 8):  # States 1 to 7
