@@ -104,7 +104,7 @@ def select_state():
         RD = get_float_input("Enter RD: ")
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
-        dc_fet.state_4(RSS, VDD, RD, K, VT)
+        dc_fet.state_4(VDD,RD,RSS, K, VT)
 
     elif selection == 5:
         RSS = get_float_input("Enter RSS: ")

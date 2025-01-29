@@ -323,7 +323,7 @@ def state_3(VDD,RD,RSS, IDSS, VPO):
             print("Cutoff")
 
 
-def state_4(RSS, VDD, RD, K, VT):
+def state_4(VDD,RD,RSS, K, VT):
     ID , VGS  = calculate_IDandVGS_state_4(K, RSS, VT)
     VDS = calculate_VDS_Other_states(VDD, ID, RD , RSS)
     if VDS> VGS - VT and ID !=0:

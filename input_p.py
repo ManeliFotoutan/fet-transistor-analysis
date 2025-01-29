@@ -19,7 +19,6 @@ def select_state():
     print("5: State 5")
     print("6: State 6")
     print("7: State 7")
-    print("8: State 8")
 
     selection = int(input("Your choice: "))
     
@@ -103,7 +102,7 @@ def select_state():
         RD = get_float_input("Enter RD: ")
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
-        dc_fet_pnp.state_4_p_channel(RSS, VDD, RD, K, VT)
+        dc_fet_pnp.state_4_p_channel(VDD, RD, RSS, K, VT)
 
     elif selection == 5:
         RSS = get_float_input("Enter RSS: ")
@@ -132,14 +131,6 @@ def select_state():
         K = get_float_input("Enter K: ")
         VT = get_float_input("Enter VT: ")
         dc_fet_pnp.state_7_p_channel(VDD, RD, RG, K, VT)
-
-    elif selection == 8:
-        VDD = get_float_input("Enter VDD: ")
-        RD = get_float_input("Enter RD: ")
-        RG = get_float_input("Enter RG: ")
-        IDSS = get_float_input("Enter IDSS: ")
-        VP = get_float_input("Enter VP: ")
-        dc_fet_pnp.state_8_p_channel(VDD, RD, RG, IDSS, VP)
 
     else:
         print("Invalid choice!")
