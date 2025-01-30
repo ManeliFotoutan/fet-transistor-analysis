@@ -8,14 +8,14 @@ from PIL import Image, ImageTk
 # Define global styles
 BG_COLOR = "#FECEB1"
 FG_COLOR = "#e38e00"
-BUTTON_COLOR = "#C8A2C8"
+BUTTON_COLOR = "#F0D2F0"
 BUTTON_HOVER_COLOR = "#a020f0"
-ENTRY_BG_COLOR = "#a020f0"
+ENTRY_BG_COLOR = "#F0D2F0"
 ENTRY_FG_COLOR = "#e38e00"
 Cream = "#FECEB1"
 orange = "#e38e00"
 Purple ="#a020f0"
-light_purple = "#C8A2C8"
+light_purple = "#F0D2F0"
 
 def on_enter(e):
     """Handle button hover."""
@@ -131,7 +131,7 @@ def select_state():
             img_label.image = img_display 
             img_label.pack()
 
-            circuit_type_input = get_float_inputs(["Enter Circuit Type (1-6):"])
+            circuit_type_input = get_float_inputs(["Enter Circuit Type 1-6 (the order is like priviose page)"])
             circuit_type = int(next(iter(circuit_type_input.values()), None))
 
             if circuit_type not in range(1, 7):
@@ -160,16 +160,62 @@ def select_state():
             
             inputs = get_float_inputs(param_prompts[circuit_type])
             
-            function_map = {
-                1: gui_dc_fet_pnp.state_1_p_channel,
-                2: gui_dc_fet_pnp.state_2_p_channel,
-                3: gui_dc_fet_pnp.state_3_p_channel,
-                4: gui_dc_fet_pnp.state_4_p_channel,
-                5: gui_dc_fet_pnp.state_5_p_channel,
-                6: gui_dc_fet_pnp.state_6_p_channel
-            }
             
-            result, details = function_map[circuit_type](*circuit_values, *inputs.values())
+            if circuit_type == 1:
+                result, details = gui_dc_fet_pnp.state_1_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # VGG
+                circuit_values[2],  # RD
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
+            elif circuit_type == 2:
+                result, details = gui_dc_fet_pnp.state_2_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # VGG
+                circuit_values[2],  # RD
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+                )
+            elif circuit_type == 3:
+                result, details = gui_dc_fet_pnp.state_3_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RSS
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
+            elif circuit_type == 4:
+                result, details = gui_dc_fet_pnp.state_4_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RSS
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+            )
+            elif circuit_type == 5:
+                result, details = gui_dc_fet_pnp.state_5_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RG1
+                circuit_values[3],  # RG2
+                circuit_values[4],  # RSS
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
+            elif circuit_type == 6:
+                result, details = gui_dc_fet_pnp.state_6_p_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RG1
+                circuit_values[3],  # RG2
+                circuit_values[4],  # RSS
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+                )
+            else:
+                messagebox.showerror("Error", "Invalid Circuit Type!")
+                return
             show_output(result, details)
         else:
             if state == 1:
@@ -305,6 +351,7 @@ def select_state():
     root = tk.Tk()
     root.title("FET Analysis")
     root.configure(bg=BG_COLOR)
+    root.geometry("800x600")
 
 
     tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = Purple).pack(pady=10)

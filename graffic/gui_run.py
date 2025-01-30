@@ -5,14 +5,12 @@ import gui_input_n
 from tkinter import ttk
 
 # Define global styles
-BG_COLOR = "#FECEB1" 
-FG_COLOR = "#e38e00" 
-BUTTON_COLOR = "#C8A2C8" 
-BUTTON_HOVER_COLOR = "#a020f0" 
-Cream = "#FECEB1"
-orange = "#e38e00"
-Purple ="#a020f0"
-light_purple = "#C8A2C8"
+BG_COLOR = "#fbebe5" 
+FG_COLOR = "#fbebe5" 
+BUTTON_COLOR = "#635048" 
+BUTTON_HOVER_COLOR = "#635048" 
+brown = "#635048"
+
 
 def on_enter(e):
     """Handle button hover."""
@@ -35,7 +33,7 @@ def handle_manual_input():
 
     manual_window = tk.Toplevel()
     manual_window.title("Manual Input")
-    manual_window.geometry("400x200")
+    manual_window.geometry("500x300")
     manual_window.configure(bg=BG_COLOR)
 
     tk.Label(
@@ -88,7 +86,7 @@ def show_guide():
         text="📘 DC_FET Circuit Analyzer - Guide",
         font=("Arial Bold", 14),
         background=BG_COLOR,
-        foreground=Purple
+        foreground=brown
     ).pack(pady=10)
 
     # Frame for Scrollable Text
@@ -96,7 +94,7 @@ def show_guide():
     frame.pack(fill="both", expand=True, padx=10, pady=5)
 
     # Text Widget
-    text_box = tk.Text(frame, wrap="word", height=10, font=("Arial", 12), bg=BG_COLOR, fg=Purple)
+    text_box = tk.Text(frame, wrap="word", height=10, font=("Arial", 12), bg=BG_COLOR, fg=brown)
     text_box.pack(side="left", fill="both", expand=True)
 
     # Scrollbar
@@ -117,7 +115,7 @@ def show_guide():
     
     
     Electronics Circuits Project 
-    @ Forotan - Kazemzade
+    @ Foroutan - Kazemzade
     """
     text_box.insert("1.0", guide_text)
     text_box.config(state="disabled")  # Prevent user edits

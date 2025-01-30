@@ -7,14 +7,14 @@ import extract_text
 
 BG_COLOR = "#FECEB1"
 FG_COLOR = "#e38e00"
-BUTTON_COLOR = "#C8A2C8"
+BUTTON_COLOR = "#F0D2F0"
 BUTTON_HOVER_COLOR = "#a020f0"
-ENTRY_BG_COLOR = "#a020f0"
+ENTRY_BG_COLOR = "#F0D2F0"
 ENTRY_FG_COLOR = "#e38e00"
 Cream = "#FECEB1"
 orange = "#e38e00"
 Purple ="#a020f0"
-light_purple = "#C8A2C8"
+light_purple = "#F0D2F0"
 
 def on_enter(e):
     """Handle button hover."""
@@ -113,6 +113,7 @@ def show_output(result, details):
     root_output.title("FET Analysis")
     root_output.configure(bg=BG_COLOR)
 
+
     # Display result label
     result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=Purple)
     result_label.pack(pady=20)
@@ -126,98 +127,108 @@ def show_output(result, details):
 
     
 def select_state():
-    """Handles the GUI for selecting one of the 9 states."""
     def handle_selection(state):
         if state == 0:
             image_path = filedialog.askopenfilename(title="Select Image File")
             if not image_path:
-                raise ValueError("No image selected!")
-
+                messagebox.showerror("Error", "No image selected!")
+                return
+            
             img = Image.open(image_path)
             img_display = ImageTk.PhotoImage(img)
 
-            # Create a new window to display the image
             img_window = tk.Toplevel()
             img_window.title("Circuit Image")
             img_label = tk.Label(img_window, image=img_display)
+            img_label.image = img_display 
             img_label.pack()
-            img_window.mainloop()
 
-            # Select circuit type (1-6)
-            circuit_type = askinteger("Circuit Type", "Enter Circuit Type (1-6):")
+            circuit_type_input = get_float_inputs(["Enter Circuit Type 1-6 (the order is like priviose page)"])
+            circuit_type = int(next(iter(circuit_type_input.values()), None))
+
             if circuit_type not in range(1, 7):
-                raise ValueError("Invalid circuit type!")
+                circuit_type = None
+
+            if not circuit_type or circuit_type not in range(1, 7):
+                messagebox.showerror("Error", "Invalid Circuit Type!")
+                return
+
+            circuit_extractors = [extract_text.simple_circuit, extract_text.circuit, extract_text.complex_circuit]
+            extract_func = circuit_extractors[min(circuit_type-1, 2)]
+            circuit_values = extract_func(image_path)
+
+            if circuit_values[0] is None:
+                messagebox.showerror("Error", "Failed to extract circuit values.")
+                return
+            
+            param_prompts = {
+                1: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                2: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
+                3: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                4: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
+                5: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                6: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"]
+            }
+            
+            inputs = get_float_inputs(param_prompts[circuit_type])
+            
+            
             if circuit_type == 1:
-                VDD, VGG, RD = extract_text.simple_circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet.state_1_n_channel(VDD, VGG, RD, IDSS, VPO)
-                    show_output(result, details)
-
+                result, details = gui_dc_fet.state_1_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # VGG
+                circuit_values[2],  # RD
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
             elif circuit_type == 2:
-                VDD, VGG, RD = extract_text.simple_circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_2_n_channel(VDD, VGG, RD, K, VT)
-                    show_output(result, details)
-
+                result, details = gui_dc_fet.state_2_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # VGG
+                circuit_values[2],  # RD
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+                )
             elif circuit_type == 3:
-                VDD, RD, RS = extract_text.circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result ,details = gui_dc_fet.state_3_n_channel(VDD, RD, RS, IDSS, VPO)
-                    show_output(result, details)
-
+                result, details = gui_dc_fet.state_3_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RSS
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
             elif circuit_type == 4:
-                VDD, RD, RS = extract_text.circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_4_n_channel(VDD, RD, RS, K, VT)
-                    show_output(result, details)
-
+                result, details = gui_dc_fet.state_4_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RSS
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+            )
             elif circuit_type == 5:
-                VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
-                if VDD is not None:
-                    prompts = [
-                        "Enter IDSS (Gate-Source Leakage Current) : ",
-                        "Enter VPO (Pinch-off Voltage) : "]
-                    inputs = get_float_inputs(prompts)
-                    
-                    IDSS = inputs("Enter IDSS (Gate-Source Leakage Current) : ")
-                    VPO = inputs("Enter VPO (Pinch-off Voltage) :")
-                    result , details = gui_dc_fet.state_5_n_channel(VDD, RD, RG1, RG2, RS, IDSS, VPO)
-                    show_output(result , details)
-
+                result, details = gui_dc_fet.state_5_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RG1
+                circuit_values[3],  # RG2
+                circuit_values[4],  # RSS
+                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
+                inputs["Enter VPO (Pinch-off Voltage):"]
+                )
             elif circuit_type == 6:
-                VDD, RD, RG1, RG2, RS = extract_text.complex_circuit(image_path)
-                if VDD is not None:
-                    prompts = ["Enter K (transconductance parameter) : " ,
-                                "Enter VT (voltage transformer) : "]
-                    inputs = get_float_inputs(prompts)
-                    K = inputs("Enter K (transconductance parameter) : ")
-                    VT = inputs("Enter VT (voltage transformer) : ")
-                    result , details = gui_dc_fet.state_6_n_channel(VDD, RD, RG1, RG2, RS, K, VT)
-                    show_output(result, details)
+                result, details = gui_dc_fet.state_6_n_channel(
+                circuit_values[0],  # VDD
+                circuit_values[1],  # RD
+                circuit_values[2],  # RG1
+                circuit_values[3],  # RG2
+                circuit_values[4],  # RSS
+                inputs["Enter K (transconductance parameter):"],  
+                inputs["Enter VT (voltage transformer):"]
+                )
+            else:
+                messagebox.showerror("Error", "Invalid Circuit Type!")
+                return
+            show_output(result, details)
         else:
             if state == 1:
                 prompts = [
@@ -369,6 +380,7 @@ def select_state():
     root = tk.Tk()
     root.title("FET Analysis")
     root.configure(bg=BG_COLOR)
+    root.geometry("800x650")
 
 
     tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = Purple).pack(pady=10)
@@ -391,8 +403,8 @@ def select_state():
         4: "RSS in Enhancement MOSFET",
         5: "RG1, RG2 in JFET and Depletion MOSFET",
         6: "RG1, RG2 in Enhancement MOSFET",
-        7: "Biasing Circuit",
-        8: "State 8: Description for State 8"
+        7: "Biasing Circuit for JFET and Depletion MOSFET ",
+        8: "Biasing Circuit for Enhancement MOSFET"
     }
     # Create buttons for each state (1 to 8)
     for i in range(1, 9):  # States 1 to 8

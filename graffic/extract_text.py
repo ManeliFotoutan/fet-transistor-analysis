@@ -2,7 +2,7 @@ from PIL import Image
 import pytesseract
 import re
 
-pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  # Adjust if necessary
+pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'  
 
 def simple_circuit(image_path):
     img = Image.open(image_path)
