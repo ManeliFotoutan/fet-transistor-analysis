@@ -5,11 +5,12 @@ import gui_input_n
 from tkinter import ttk
 
 # Define global styles
-BG_COLOR = "#fbebe5" 
-FG_COLOR = "#fbebe5" 
-BUTTON_COLOR = "#635048" 
-BUTTON_HOVER_COLOR = "#635048" 
-brown = "#635048"
+BG_COLOR = "#808080" 
+FG_COLOR = "#2d3233"
+BUTTON_COLOR = "#469db0" 
+BUTTON_HOVER_COLOR = "#43828f" 
+dark_gray = "#2d3233"
+gray = "#808080"
 
 
 def on_enter(e):
@@ -40,7 +41,7 @@ def handle_manual_input():
         manual_window,
         text="Please select one of the following states :",
         bg=BG_COLOR, 
-        fg=BUTTON_HOVER_COLOR,
+        fg=dark_gray,
         font=("Arial bold", 14)
     ).pack(pady=20)
 
@@ -86,7 +87,7 @@ def show_guide():
         text="📘 DC_FET Circuit Analyzer - Guide",
         font=("Arial Bold", 14),
         background=BG_COLOR,
-        foreground=brown
+        foreground= dark_gray
     ).pack(pady=10)
 
     # Frame for Scrollable Text
@@ -94,8 +95,10 @@ def show_guide():
     frame.pack(fill="both", expand=True, padx=10, pady=5)
 
     # Text Widget
-    text_box = tk.Text(frame, wrap="word", height=10, font=("Arial", 12), bg=BG_COLOR, fg=brown)
+    text_box = tk.Text(frame, wrap="word", height=10, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray)
     text_box.pack(side="left", fill="both", expand=True)
+    style = ttk.Style()
+    style.configure("Custom.TButton", background=BUTTON_COLOR, foreground=BUTTON_HOVER_COLOR, font=("Arial", 12))
 
     # Scrollbar
     scrollbar = ttk.Scrollbar(frame, command=text_box.yview)
@@ -125,7 +128,7 @@ def show_guide():
         guide_window,
         text="Close",
         command=guide_window.destroy,
-        style="TButton"
+        style="Custom.TButton"
     ).pack(pady=10)
     
 def main_gui():
@@ -139,7 +142,7 @@ def main_gui():
         root,
         text="Input your DC_FET circuit :",
         bg=BG_COLOR,
-        fg="#a020f0",
+        fg="#2d3233",
         font=("Arial bold", 14)
     ).pack(pady=20)
 

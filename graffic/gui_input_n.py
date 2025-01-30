@@ -5,16 +5,16 @@ import gui_dc_fet
 from PIL import Image, ImageTk
 import extract_text
 
-BG_COLOR = "#FECEB1"
-FG_COLOR = "#e38e00"
-BUTTON_COLOR = "#F0D2F0"
 BUTTON_HOVER_COLOR = "#a020f0"
-ENTRY_BG_COLOR = "#F0D2F0"
-ENTRY_FG_COLOR = "#e38e00"
-Cream = "#FECEB1"
-orange = "#e38e00"
-Purple ="#a020f0"
-light_purple = "#F0D2F0"
+ENTRY_BG_COLOR = "#469db0"
+ENTRY_FG_COLOR = "#2d3233"
+BG_COLOR = "#808080" 
+FG_COLOR = "#2d3233"
+BUTTON_COLOR = "#469db0" 
+BUTTON_HOVER_COLOR = "#43828f" 
+dark_gray = "#2d3233"
+gray = "#808080"
+
 
 def on_enter(e):
     """Handle button hover."""
@@ -90,11 +90,11 @@ def get_float_inputs(prompts):
     button_frame.grid(row=len(prompts)+1 , column=0, columnspan=2, pady=10)
 
     tk.Button(
-        button_frame, text="Submit", command=submit, bg=light_purple, fg=orange, width=10
+        button_frame, text="Submit", command=submit, bg=BUTTON_COLOR, fg=dark_gray, width=10
     ).pack(side="left")
 
     tk.Button(
-        button_frame, text="Cancel", command=cancel, bg=light_purple, fg=orange, width=10
+        button_frame, text="Cancel", command=cancel, bg=BUTTON_COLOR, fg=dark_gray, width=10
     ).pack(side="right")
 
     # Wait for the form to close
@@ -115,11 +115,11 @@ def show_output(result, details):
 
 
     # Display result label
-    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=Purple)
+    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
     result_label.pack(pady=20)
 
     # Display details label
-    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=orange)
+    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray)
     details_label.pack(pady=10)
 
     # Start the main loop for the output window
@@ -383,7 +383,7 @@ def select_state():
     root.geometry("800x650")
 
 
-    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = Purple).pack(pady=10)
+    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = dark_gray).pack(pady=10)
 
     tk.Button(
     root,
