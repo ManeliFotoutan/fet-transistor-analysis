@@ -6,12 +6,16 @@ import extract_text
 from PIL import Image, ImageTk
 
 # Define global styles
-BG_COLOR = "#1E1E2F"
-FG_COLOR = "#FFFFFF"
-BUTTON_COLOR = "#007ACC"
-BUTTON_HOVER_COLOR = "#005A9E"
-ENTRY_BG_COLOR = "#2D2D44"
-ENTRY_FG_COLOR = "#FFFFFF"
+BG_COLOR = "#FECEB1"
+FG_COLOR = "#e38e00"
+BUTTON_COLOR = "#C8A2C8"
+BUTTON_HOVER_COLOR = "#a020f0"
+ENTRY_BG_COLOR = "#a020f0"
+ENTRY_FG_COLOR = "#e38e00"
+Cream = "#FECEB1"
+orange = "#e38e00"
+Purple ="#a020f0"
+light_purple = "#C8A2C8"
 
 def on_enter(e):
     """Handle button hover."""
@@ -55,7 +59,7 @@ def get_float_inputs(prompts):
             form_window,
             text=prompt,
             bg=BG_COLOR,
-            fg=FG_COLOR,
+            fg=Purple,
             font=("Arial", 12),
             anchor="w",
         ).grid(row=i, column=0, padx=10, pady=5, sticky="w")
@@ -75,11 +79,11 @@ def get_float_inputs(prompts):
     button_frame.grid(row=len(prompts)+1 , column=0, columnspan=2, pady=10)
 
     tk.Button(
-        button_frame, text="Submit", command=submit, bg="#007ACC", fg="white", width=10
+        button_frame, text="Submit", command=submit, bg=light_purple, fg=orange, width=10
     ).pack(side="left")
 
     tk.Button(
-        button_frame, text="Cancel", command=cancel, bg="#007ACC", fg="white", width=10
+        button_frame, text="Cancel", command=cancel, bg=light_purple, fg=orange, width=10
     ).pack(side="right")
 
     # Wait for the form to close
@@ -99,11 +103,11 @@ def show_output(result, details):
     root_output.configure(bg=BG_COLOR)
 
     # Display result label
-    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg="white")
+    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=Purple)
     result_label.pack(pady=20)
 
     # Display details label
-    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg="#005A9E")
+    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=orange)
     details_label.pack(pady=10)
 
     # Start the main loop for the output window
@@ -167,7 +171,6 @@ def select_state():
             
             result, details = function_map[circuit_type](*circuit_values, *inputs.values())
             show_output(result, details)
-
         else:
             if state == 1:
                 prompts = [
@@ -304,17 +307,17 @@ def select_state():
     root.configure(bg=BG_COLOR)
 
 
-    tk.Label(root, text="Please select one of the following states:", font=("Arial", 14) ,bg= BG_COLOR ,fg = "white").pack(pady=10)
+    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = Purple).pack(pady=10)
 
     tk.Button(
     root,
-    text="Give picture",
+    text=" Upload Picture",
     command=lambda: handle_selection(0),
     bg=BUTTON_COLOR,
     fg=FG_COLOR,
     font=("Arial", 12),
     relief="flat",
-    width=30,
+    width=40,
     height=2
     ).pack(pady=10)
     state_texts = {
@@ -336,7 +339,7 @@ def select_state():
             fg=FG_COLOR,
             font=("Arial", 12),
             relief="flat",
-            width=30,
+            width=40,
             height=2
         ).pack(pady=5)
 

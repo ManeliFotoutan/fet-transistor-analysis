@@ -2,12 +2,17 @@ import tkinter as tk
 from tkinter import messagebox
 import gui_input_p
 import gui_input_n
+from tkinter import ttk
 
 # Define global styles
-BG_COLOR = "#1E1E2F"
-FG_COLOR = "#FFFFFF"
-BUTTON_COLOR = "#007ACC"
-BUTTON_HOVER_COLOR = "#005A9E"
+BG_COLOR = "#FECEB1" 
+FG_COLOR = "#e38e00" 
+BUTTON_COLOR = "#C8A2C8" 
+BUTTON_HOVER_COLOR = "#a020f0" 
+Cream = "#FECEB1"
+orange = "#e38e00"
+Purple ="#a020f0"
+light_purple = "#C8A2C8"
 
 def on_enter(e):
     """Handle button hover."""
@@ -35,10 +40,10 @@ def handle_manual_input():
 
     tk.Label(
         manual_window,
-        text="Please select one of the following states:",
-        bg=BG_COLOR,
-        fg=FG_COLOR,
-        font=("Arial", 12)
+        text="Please select one of the following states :",
+        bg=BG_COLOR, 
+        fg=BUTTON_HOVER_COLOR,
+        font=("Arial bold", 14)
     ).pack(pady=20)
 
     n_button = tk.Button(
@@ -47,7 +52,7 @@ def handle_manual_input():
         command=lambda: handle_selection("n-channel"),
         bg=BUTTON_COLOR,
         fg=FG_COLOR,
-        font=("Arial", 12),
+        font=("Arial", 14),
         relief="flat",
         width=15,
         height=2
@@ -62,7 +67,7 @@ def handle_manual_input():
         command=lambda: handle_selection("p-channel"),
         bg=BUTTON_COLOR,
         fg=FG_COLOR,
-        font=("Arial", 12),
+        font=("Arial", 14),
         relief="flat",
         width=15,
         height=2
@@ -70,7 +75,61 @@ def handle_manual_input():
     p_button.pack(pady=10)
     p_button.bind("<Enter>", on_enter)
     p_button.bind("<Leave>", on_leave)
+def show_guide():
+    """Opens a Guide Window with scrollable text."""
+    guide_window = tk.Toplevel()
+    guide_window.title("User Guide")
+    guide_window.geometry("500x400")
+    guide_window.configure(bg=BG_COLOR)
 
+    # Title Label
+    ttk.Label(
+        guide_window,
+        text="📘 DC_FET Circuit Analyzer - Guide",
+        font=("Arial Bold", 14),
+        background=BG_COLOR,
+        foreground=Purple
+    ).pack(pady=10)
+
+    # Frame for Scrollable Text
+    frame = ttk.Frame(guide_window)
+    frame.pack(fill="both", expand=True, padx=10, pady=5)
+
+    # Text Widget
+    text_box = tk.Text(frame, wrap="word", height=10, font=("Arial", 12), bg=BG_COLOR, fg=Purple)
+    text_box.pack(side="left", fill="both", expand=True)
+
+    # Scrollbar
+    scrollbar = ttk.Scrollbar(frame, command=text_box.yview)
+    scrollbar.pack(side="right", fill="y")
+    text_box.config(yscrollcommand=scrollbar.set)
+
+    # Guide Instructions
+    guide_text = """
+    1 Click 'Input Circuit' to analyze a DC_FET circuit.
+    2 Then you have 2 options , n_channel and p-channel
+    3 p-channel includes 7 states  including JFET , Enhancement MOSFET and Depletion MOSFET
+    4 n-channel includes 8 states  including JFET , Enhancement MOSFET and Depletion MOSFET
+    5 Select an image of the circuit OR enter values manually.
+    6 if you choose uploading image , choose the correct circuit type (1-6).
+    7 The tool will compute the results (saturated , not saturated or cutoff) and display the analysis.
+    8 Use this guide if you need help!
+    
+    
+    Electronics Circuits Project 
+    @ Forotan - Kazemzade
+    """
+    text_box.insert("1.0", guide_text)
+    text_box.config(state="disabled")  # Prevent user edits
+
+    # Close Button
+    ttk.Button(
+        guide_window,
+        text="Close",
+        command=guide_window.destroy,
+        style="TButton"
+    ).pack(pady=10)
+    
 def main_gui():
     """Main GUI application."""
     root = tk.Tk()
@@ -80,10 +139,10 @@ def main_gui():
 
     tk.Label(
         root,
-        text="Input your DC_FET circuit",
+        text="Input your DC_FET circuit :",
         bg=BG_COLOR,
-        fg=FG_COLOR,
-        font=("Arial Bold", 16)
+        fg="#a020f0",
+        font=("Arial bold", 14)
     ).pack(pady=20)
 
     manual_button = tk.Button(
@@ -104,6 +163,7 @@ def main_gui():
     guide_button = tk.Button(
         root,
         text="Guide",
+        command=show_guide,
         bg=BUTTON_COLOR,
         fg=FG_COLOR,
         font=("Arial", 14),

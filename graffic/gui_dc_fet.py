@@ -124,7 +124,7 @@ def calculate_IDandVDS_state_7(VDD, RD, K, VT):
 def calculate_IDandVDS_state_8(VDD,RD,IDSS,VP):
     def equations(vars):
         ID, VDS = vars
-        eq1 = ID - (IDSS(1-VDS//VP)**2)
+        eq1 = ID - IDSS * (1 - VDS / VP) ** 2
         eq2 = VDS - (VDD - ID * RD)
         return [eq1, eq2]
 
