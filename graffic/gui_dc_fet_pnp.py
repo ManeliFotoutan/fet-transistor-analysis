@@ -154,7 +154,7 @@ def state_2_p_channel(VDD, VGG, RD, K, VT):
         details = f"State 2 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
     else:
         result = "Not Saturated"
-        details = ""
+        details = f"State 2 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
     return result, details
 
 def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
