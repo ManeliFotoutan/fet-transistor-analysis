@@ -143,18 +143,27 @@ def select_state():
             img_label.image = img_display 
             img_label.pack()
 
-            circuit_type_input = get_float_inputs(["Enter Circuit Type 1-6 (the order is like priviose page)"])
+            circuit_type_input = get_float_inputs(["Enter Circuit Type 1-8 (the order is like previous page)"])
             circuit_type = int(next(iter(circuit_type_input.values()), None))
 
-            if circuit_type not in range(1, 7):
+            if circuit_type not in range(1, 9):
                 circuit_type = None
 
-            if not circuit_type or circuit_type not in range(1, 7):
+            if circuit_type not in range(1, 9):
                 messagebox.showerror("Error", "Invalid Circuit Type!")
                 return
 
-            circuit_extractors = [extract_text.simple_circuit, extract_text.circuit, extract_text.complex_circuit]
-            extract_func = circuit_extractors[min(circuit_type-1, 2)]
+            circuit_extractors = {
+                1: extract_text.simple_circuit,
+                2: extract_text.simple_circuit,
+                3: extract_text.circuit,
+                4: extract_text.circuit,
+                5: extract_text.complex_circuit,
+                6: extract_text.complex_circuit,
+                7: extract_text.baiasing_circuit,
+                8: extract_text.baiasing_circuit
+            }
+            extract_func = circuit_extractors[circuit_type]
             circuit_values = extract_func(image_path)
 
             if circuit_values[0] is None:
@@ -167,68 +176,32 @@ def select_state():
                 3: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
                 4: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
                 5: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
-                6: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"]
+                6: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
+                7: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
+                8: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"]
             }
             
             inputs = get_float_inputs(param_prompts[circuit_type])
             
+            state_functions = {
+                1: gui_dc_fet.state_1_n_channel,
+                2: gui_dc_fet.state_2_n_channel,
+                3: gui_dc_fet.state_3_n_channel,
+                4: gui_dc_fet.state_4_n_channel,
+                5: gui_dc_fet.state_5_n_channel,
+                6: gui_dc_fet.state_6_n_channel,
+                7: gui_dc_fet.state_7_n_channel,
+                8: gui_dc_fet.state_8_n_channel
+            }
             
-            if circuit_type == 1:
-                result, details = gui_dc_fet.state_1_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # VGG
-                circuit_values[2],  # RD
-                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
-                inputs["Enter VPO (Pinch-off Voltage):"]
-                )
-            elif circuit_type == 2:
-                result, details = gui_dc_fet.state_2_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # VGG
-                circuit_values[2],  # RD
-                inputs["Enter K (transconductance parameter):"],  
-                inputs["Enter VT (voltage transformer):"]
-                )
-            elif circuit_type == 3:
-                result, details = gui_dc_fet.state_3_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # RD
-                circuit_values[2],  # RSS
-                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
-                inputs["Enter VPO (Pinch-off Voltage):"]
-                )
-            elif circuit_type == 4:
-                result, details = gui_dc_fet.state_4_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # RD
-                circuit_values[2],  # RSS
-                inputs["Enter K (transconductance parameter):"],  
-                inputs["Enter VT (voltage transformer):"]
+            result, details = state_functions[circuit_type](
+                *circuit_values, 
+                inputs[param_prompts[circuit_type][0]],
+                inputs[param_prompts[circuit_type][1]]
             )
-            elif circuit_type == 5:
-                result, details = gui_dc_fet.state_5_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # RD
-                circuit_values[2],  # RG1
-                circuit_values[3],  # RG2
-                circuit_values[4],  # RSS
-                inputs["Enter IDSS (Gate-Source Leakage Current):"],  
-                inputs["Enter VPO (Pinch-off Voltage):"]
-                )
-            elif circuit_type == 6:
-                result, details = gui_dc_fet.state_6_n_channel(
-                circuit_values[0],  # VDD
-                circuit_values[1],  # RD
-                circuit_values[2],  # RG1
-                circuit_values[3],  # RG2
-                circuit_values[4],  # RSS
-                inputs["Enter K (transconductance parameter):"],  
-                inputs["Enter VT (voltage transformer):"]
-                )
-            else:
-                messagebox.showerror("Error", "Invalid Circuit Type!")
-                return
+            
             show_output(result, details)
+
         else:
             if state == 1:
                 prompts = [
