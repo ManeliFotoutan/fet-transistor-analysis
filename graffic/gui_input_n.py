@@ -164,7 +164,7 @@ def show_output(result, details):
     details_label.pack(pady=10)
 
     # Speak after window appears (delay by 500ms)
-    root_output.after(500, lambda: speak_text(f"Result: {result}. {details}."))
+    root_output.after(500, lambda: speak_text(f"Result: {result}. {rounded_details}."))
 
     # Start the main loop for the output window
     root_output.mainloop()
@@ -215,14 +215,14 @@ def select_state():
                 return
             
             param_prompts = {
-                1: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
-                2: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
-                3: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
-                4: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
-                5: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
-                6: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"],
-                7: ["Enter IDSS (Gate-Source Leakage Current):", "Enter VPO (Pinch-off Voltage):"],
-                8: ["Enter K (transconductance parameter):", "Enter VT (voltage transformer):"]
+                1: ["Enter IDSS (Gate-Source Leakage Current) in 'mA': ", "Enter VPO (Pinch-off Voltage) in 'V': "],
+                2: ["Enter K (transconductance parameter) in 'mA/V²': ", "Enter VT (voltage transformer) in 'V': "],
+                3: ["Enter IDSS (Gate-Source Leakage Current) in 'mA': ", "Enter VPO (Pinch-off Voltage) in 'V': "],
+                4: ["Enter K (transconductance parameter) in 'mA/V²': ", "Enter VT (voltage transformer) in 'V': "],
+                5: ["Enter IDSS (Gate-Source Leakage Current) in 'mA': ", "Enter VPO (Pinch-off Voltage) in 'V': "],
+                6: ["Enter K (transconductance parameter) in 'mA/V²': ", "Enter VT (voltage transformer) in 'V': "],
+                7: ["Enter IDSS (Gate-Source Leakage Current) in 'mA': ", "Enter VPO (Pinch-off Voltage) in 'V': "],
+                8: ["Enter K (transconductance parameter) in 'mA/V²': ", "Enter VT (voltage transformer) in 'V': "]
             }
             
             inputs = get_float_inputs(param_prompts[circuit_type])
@@ -256,142 +256,142 @@ def select_state():
         else:
             if state == 1:
                 prompts = [
-                "Enter VGG (Gate Voltage) : ",
-                "Enter VDD (Supply Voltage) : ",
-                "Enter RD (Drain Resistance) : ",
-                "Enter IDSS (Gate-Source Leakage Current) : ",
-                "Enter VPO (Pinch-off Voltage) : "
+                "Enter VGG (Gate Voltage) in 'V': ",
+                "Enter VDD (Supply Voltage) in 'V': ",
+                "Enter RD (Drain Resistance) in 'KΩ': ",
+                "Enter IDSS (Gate-Source Leakage Current) in 'mA': ",
+                "Enter VPO (Pinch-off Voltage) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                VGG = inputs["Enter VGG (Gate Voltage) : "]
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
-                VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
+                VGG = inputs["Enter VGG (Gate Voltage) in 'V': "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) in 'mA': "]
+                VPO = inputs["Enter VPO (Pinch-off Voltage) in 'V': "]
                 result, details = gui_dc_fet.state_1_n_channel(VDD, VGG, RD, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 2:
-                prompts = ["Enter VGG (Gate Voltage) : ",
-                "Enter VDD (Supply Voltage) : ",
-                "Enter RD (Drain Resistance) : ",
-                "Enter K (transconductance parameter) : " ,
-                "Enter VT (voltage transformer) : "
+                prompts = ["Enter VGG (Gate Voltage) in 'V': ",
+                "Enter VDD (Supply Voltage) in 'V': ",
+                "Enter RD (Drain Resistance) in 'KΩ': " ,
+                "Enter K (transconductance parameter) in 'mA/V²': " ,
+                "Enter VT (voltage transformer) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                VGG = inputs["Enter VGG (Gate Voltage) : "]
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                K = inputs["Enter K (transconductance parameter) : "]
-                VT = inputs["Enter VT (voltage transformer) : "]
+                VGG = inputs["Enter VGG (Gate Voltage) in 'V': "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                K = inputs["Enter K (transconductance parameter) in 'mA/V²': "]
+                VT = inputs["Enter VT (voltage transformer) in 'V': "]
                 result, details = gui_dc_fet.state_2_n_channel(VDD, VGG, RD, K, VT)
                 show_output(result, details)
 
             elif state == 3:
-                prompts = ["Enter RSS (Source-Source Resistance): ",
-                "Enter VDD (Supply Voltage) : ",
-                "Enter RD (Drain Resistance) : ",
-                "Enter IDSS (Gate-Source Leakage Current) : ",
-                "Enter VPO (Pinch-off Voltage) : "
+                prompts = ["Enter RSS (Source-Source Resistance) in 'KΩ': ",
+                "Enter VDD (Supply Voltage) in 'V': ",
+                "Enter RD (Drain Resistance) in 'KΩ': ",
+                "Enter IDSS (Gate-Source Leakage Current) in 'mA': ",
+                "Enter VPO (Pinch-off Voltage) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                RSS = inputs["Enter RSS (Source-Source Resistance): "]
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
-                VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
+                RSS = inputs["Enter RSS (Source-Source Resistance) in 'KΩ': "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) in 'mA': "]
+                VPO = inputs["Enter VPO (Pinch-off Voltage) in 'V': "]
                 result, details = gui_dc_fet.state_3_n_channel(VDD, RD, RSS, IDSS, VPO)
                 show_output(result, details)
                 
             elif state == 4:
-                prompts = ["Enter RSS (Source-Source Resistance): ",
-                "Enter VDD (Supply Voltage) : ",
-                "Enter RD (Drain Resistance) : ",
-                "Enter K (transconductance parameter) : ",
-                "Enter VT (voltage transformer) : "
+                prompts = ["Enter RSS (Source-Source Resistance) in 'KΩ': ",
+                "Enter VDD (Supply Voltage) in 'V': ",
+                "Enter RD (Drain Resistance) in 'KΩ': ",
+                "Enter K (transconductance parameter) in 'mA/V²': ",
+                "Enter VT (voltage transformer) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                RSS = inputs["Enter RSS (Source-Source Resistance): "]
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                K = inputs["Enter K (transconductance parameter) : "]
-                VT = inputs["Enter VT (voltage transformer) : "]
+                RSS = inputs["Enter RSS (Source-Source Resistance) in 'KΩ': "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                K = inputs["Enter K (transconductance parameter) in 'mA/V²': "]
+                VT = inputs["Enter VT (voltage transformer) in 'V': "]
                 result, details = gui_dc_fet.state_4_n_channel(VDD, RD , RSS, K, VT)
                 show_output(result, details)
                 
             elif state == 5:
                 prompts = [
-                    "Enter RSS (Source-Source Resistance) : ",
-                    "Enter VDD (Supply Voltage) : ",
-                    "Enter RD (Drain Resistance) : ",
-                    "Enter RG1 (Gate Resistance) : ",
-                    "Enter RG2 (Gate Resistance) : ",
-                    "Enter IDSS (Gate-Source Leakage Current) : ",
-                    "Enter VPO (Pinch-off Voltage) : "
+                    "Enter RSS (Source-Source Resistance) in 'KΩ': ",
+                    "Enter VDD (Supply Voltage) in 'V': ",
+                    "Enter RD (Drain Resistance) in 'KΩ': ",
+                    "Enter RG1 (Gate Resistance) in 'KΩ': ",
+                    "Enter RG2 (Gate Resistance) in 'KΩ': ",
+                    "Enter IDSS (Gate-Source Leakage Current) in 'mA': ",
+                    "Enter VPO (Pinch-off Voltage) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                RSS = inputs["Enter RSS (Source-Source Resistance) : "]
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                RG1 = inputs["Enter RG1 (Gate Resistance) : "]
-                RG2 = inputs["Enter RG2 (Gate Resistance) : "]
-                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
-                VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
+                RSS = inputs["Enter RSS (Source-Source Resistance) in 'KΩ': "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                RG1 = inputs["Enter RG1 (Gate Resistance) in 'KΩ': "]
+                RG2 = inputs["Enter RG2 (Gate Resistance) in 'KΩ': "]
+                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) in 'mA': "]
+                VPO = inputs["Enter VPO (Pinch-off Voltage) in 'V': "]
                 result, details = gui_dc_fet.state_5_n_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO)
                 show_output(result, details)
 
             elif state == 6:
                 prompts = [
-                    "Enter VDD (Supply Voltage) : ",
-                    "Enter RD (Drain Resistance) : ",
-                    "Enter RSS (Source-Source Resistance) : ",
-                    "Enter RG1 (Gate Resistance) : ",
-                    "Enter RG2 (Gate Resistance) : ",
-                    "Enter K (transconductance parameter) : ",
-                    "Enter VT (voltage transformer) : "
+                    "Enter VDD (Supply Voltage) in 'V': ",
+                    "Enter RD (Drain Resistance) in 'KΩ': ",
+                    "Enter RSS (Source-Source Resistance) in 'KΩ': ",
+                    "Enter RG1 (Gate Resistance) in 'KΩ': ",
+                    "Enter RG2 (Gate Resistance) in 'KΩ': ",
+                    "Enter K (transconductance parameter) in 'mA/V²': ",
+                    "Enter VT (voltage transformer) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                RSS = inputs["Enter RSS (Source-Source Resistance) : "]
-                RG1 = inputs["Enter RG1 (Gate Resistance) : "]
-                RG2 = inputs["Enter RG2 (Gate Resistance) : "]
-                K = inputs["Enter K (transconductance parameter) : "]
-                VT = inputs["Enter VT (voltage transformer) : "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                RSS = inputs["Enter RSS (Source-Source Resistance) in 'KΩ': "]
+                RG1 = inputs["Enter RG1 (Gate Resistance) in 'KΩ': "]
+                RG2 = inputs["Enter RG2 (Gate Resistance) in 'KΩ': "]
+                K = inputs["Enter K (transconductance parameter) in 'mA/V²': "]
+                VT = inputs["Enter VT (voltage transformer) in 'V': "]
                 result, details = gui_dc_fet.state_6_n_channel(VDD, RD, RG1, RG2, RSS, K, VT)
                 show_output(result, details)
 
             elif state == 7:
                 prompts = [
-                    "Enter VDD (Supply Voltage) : ",
-                    "Enter RD (Drain Resistance) : ",
-                    "Enter RG (Gate Resistance) : ",
-                    "Enter K (transconductance parameter) : ",
-                    "Enter VT (voltage transformer) : "
+                    "Enter VDD (Supply Voltage) in 'V': ",
+                    "Enter RD (Drain Resistance) in 'KΩ': ",
+                    "Enter RG (Gate Resistance) in 'KΩ': ",
+                    "Enter K (transconductance parameter) in 'mA/V²': ",
+                    "Enter VT (voltage transformer) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD (Drain Resistance) : "]
-                RG = inputs["Enter RG (Gate Resistance) : "]
-                K = inputs["Enter K (transconductance parameter) : "]
-                VT = inputs["Enter VT (voltage transformer) : "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                RG = inputs["Enter RG (Gate Resistance) in 'KΩ': "]
+                K = inputs["Enter K (transconductance parameter) in 'mA/V²': "]
+                VT = inputs["Enter VT (voltage transformer) in 'V': "]
                 result, details = gui_dc_fet.state_7_n_channel(VDD, RD, RG, K, VT)
                 show_output(result, details)
 
             elif state == 8:
                 prompts = [
-                    "Enter VDD (Supply Voltage) : ",
-                    "Enter RD(Drain Resistance) : ",
-                    "Enter RG (Gate Resistance) : ",
-                    "Enter IDSS (Gate-Source Leakage Current) : ",
-                    "Enter VPO (Pinch-off Voltage) : "
+                    "Enter VDD (Supply Voltage) in 'V': ",
+                    "Enter RD (Drain Resistance) in 'KΩ': ",
+                    "Enter RG (Gate Resistance) in : ",
+                    "Enter IDSS (Gate-Source Leakage Current) in 'mA': ",
+                    "Enter VPO (Pinch-off Voltage) in 'V': "
                 ]
                 inputs = get_float_inputs(prompts)
-                VDD = inputs["Enter VDD (Supply Voltage) : "]
-                RD = inputs["Enter RD(Drain Resistance) : "]
-                RG = inputs["Enter RG (Gate Resistance) : "]
-                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) : "]
-                VPO = inputs["Enter VPO (Pinch-off Voltage) : "]
+                VDD = inputs["Enter VDD (Supply Voltage) in 'V': "]
+                RD = inputs["Enter RD (Drain Resistance) in 'KΩ': "]
+                RG = inputs["Enter RG (Gate Resistance) in 'KΩ': "]
+                IDSS = inputs["Enter IDSS (Gate-Source Leakage Current) in 'mA': "]
+                VPO = inputs["Enter VPO (Pinch-off Voltage) in 'V': "]
                 result, details = gui_dc_fet.state_8_n_channel(VDD, RD, RG, IDSS, VPO)
                 show_output(result, details)
                 

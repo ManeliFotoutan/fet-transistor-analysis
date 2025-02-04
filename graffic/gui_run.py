@@ -73,6 +73,7 @@ def handle_manual_input():
     p_button.pack(pady=10)
     p_button.bind("<Enter>", on_enter)
     p_button.bind("<Leave>", on_leave)
+    
 def show_guide():
     """Opens a Guide Window with scrollable text."""
     guide_window = tk.Toplevel()
