@@ -112,6 +112,7 @@ def speak_text(text):
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
+    engine.stop()  # Ensure proper shutdown after speech is finished
 
 def show_output(result, details):
     root_output = tk.Tk()

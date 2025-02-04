@@ -95,12 +95,15 @@ def get_float_inputs(prompts):
 
     return inputs
 
+import pyttsx3
 
 def speak_text(text):
     """Convert text to speech."""
     engine = pyttsx3.init()
     engine.say(text)
     engine.runAndWait()
+    engine.stop()  # Ensure proper shutdown after speech is finished
+
 
 def show_output(result, details):
     root_output = tk.Tk()
