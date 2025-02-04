@@ -8,7 +8,7 @@ def simple_circuit(image_path):
     img = Image.open(image_path)
     text = pytesseract.image_to_string(img, config='--psm 3')
 
-    v_matches = re.findall(r'(\d+\.?\d*)\s*V', text)
+    v_matches = re.findall(r'(\d+\.?\d*)\s*[Vv]', text)
     k_matches = re.findall(r'(\d+\.?\d*)\s*k', text)
 
     VDD = float(v_matches[0]) if v_matches else 0.0

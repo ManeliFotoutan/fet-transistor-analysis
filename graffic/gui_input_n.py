@@ -238,11 +238,18 @@ def select_state():
                 8: gui_dc_fet.state_8_n_channel
             }
             
-            result, details = state_functions[circuit_type](
+            temp_result = state_functions[circuit_type](
                 *circuit_values, 
                 inputs[param_prompts[circuit_type][0]],
                 inputs[param_prompts[circuit_type][1]]
             )
+            print(f"Function output for circuit_type {circuit_type}: {temp_result}")
+
+            if temp_result is None:
+                raise ValueError(f"Function state_{circuit_type}_n_channel returned None!")
+
+            result, details = temp_result
+
             
             show_output(result, details)
 

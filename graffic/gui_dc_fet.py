@@ -282,6 +282,7 @@ def state_1_n_channel(VDD,VGG,RD, IDSS, VPO):
     if VDS> VGS - VPO and ID !=0:
         details = f"State 1 with VGS ={VGS }, ID={ID}, VDS={VDS}"
         result = "Saturated"
+        print(details)
     else:
         VDS,VGS,ID = calculate_not_saturated_parameters_state1(VDD,VGG,RD, IDSS, VPO)
         if VDS > 0 and VDS < VGS - VPO :
