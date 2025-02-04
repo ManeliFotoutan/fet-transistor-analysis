@@ -4,6 +4,7 @@ from functools import partial
 import gui_dc_fet
 from PIL import Image, ImageTk
 import extract_text
+import pyttsx3
 
 BUTTON_HOVER_COLOR = "#a020f0"
 ENTRY_BG_COLOR = "#469db0"
@@ -106,21 +107,27 @@ def get_float_inputs(prompts):
 
     return inputs
 
+def speak_text(text):
+    """Convert text to speech."""
+    engine = pyttsx3.init()
+    engine.say(text)
+    engine.runAndWait()
 
 def show_output(result, details):
-    # Create a new window
     root_output = tk.Tk()
     root_output.title("FET Analysis")
     root_output.configure(bg=BG_COLOR)
-
 
     # Display result label
     result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
     result_label.pack(pady=20)
 
     # Display details label
-    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray)
+    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray, wraplength=400)
     details_label.pack(pady=10)
+
+    # Speak after window appears (delay by 500ms)
+    root_output.after(500, lambda: speak_text(f"Result: {result}. {details}."))
 
     # Start the main loop for the output window
     root_output.mainloop()
