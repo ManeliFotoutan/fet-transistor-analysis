@@ -5,17 +5,17 @@ import gui_dc_fet
 from PIL import Image, ImageTk
 import extract_text
 import pyttsx3
+import re
 
-BUTTON_HOVER_COLOR = "#a020f0"
-ENTRY_BG_COLOR = "#469db0"
-ENTRY_FG_COLOR = "#2d3233"
-BG_COLOR = "#808080" 
-FG_COLOR = "#2d3233"
-BUTTON_COLOR = "#469db0" 
-BUTTON_HOVER_COLOR = "#43828f" 
-dark_gray = "#2d3233"
-gray = "#808080"
-
+BG_COLOR = "#FFE4C4" 
+FG_COLOR = "#640f09"
+BUTTON_COLOR = "#640f09" 
+BUTTON_HOVER_COLOR = "#640f09" 
+DARK_BROWN = "#500C07"
+BROWN = "#640f09"
+ENTRY_BG_COLOR = "#640f09"
+ENTRY_FG_COLOR = "#FFE4C4" 
+CREAM = "#FFE4C4"
 
 def on_enter(e):
     """Handle button hover."""
@@ -24,6 +24,20 @@ def on_enter(e):
 def on_leave(e):
     """Handle button leave."""
     e.widget.config(bg=BUTTON_COLOR)
+    
+def show_error_window(error_message):
+    """Create Window4 to display error messages without freezing."""
+    error_window = tk.Toplevel()
+    error_window.title("Input Error")
+    error_window.geometry("400x200")
+    error_window.grab_set()
+    error_window.configure(bg=BG_COLOR)
+
+    tk.Label(error_window, text="Invalid Input!", fg= FG_COLOR, font=("Arial", 14, "bold"), bg=BG_COLOR).pack(pady=10)
+    tk.Label(error_window, text=error_message, fg=FG_COLOR, font=("Arial", 12), bg=BG_COLOR, wraplength=350).pack(pady=10)
+    tk.Button(error_window, text="OK", command=error_window.destroy, bg=BUTTON_COLOR, fg=CREAM, width=10).pack(pady=10)
+
+
     
 def get_float_inputs(prompts):
     """
@@ -48,6 +62,14 @@ def get_float_inputs(prompts):
     inputs = {}  # Store the input fields and their associated prompts
     entries = {}  # Store the Entry widgets for validation
 
+    def is_valid_float(value):
+        """Check if the input is a valid float number."""
+        try:
+            float(value)
+            return True
+        except ValueError:
+            return False
+
     def submit():
         try:
             # Validate and collect inputs
@@ -55,10 +77,13 @@ def get_float_inputs(prompts):
                 value = entry.get().strip()
                 if value == "":
                     raise ValueError(f"Field '{prompt}' cannot be empty.")
+                elif not is_valid_float(value): 
+                    raise ValueError(f"Field '{prompt}' must be a number.")
+                
                 inputs[prompt] = float(value)
             form_window.destroy()  # Close the form on success
         except ValueError as e:
-            messagebox.showerror("Input Error", str(e))
+            show_error_window(str(e))
 
     def cancel():
         # Cancel input
@@ -91,11 +116,11 @@ def get_float_inputs(prompts):
     button_frame.grid(row=len(prompts)+1 , column=0, columnspan=2, pady=10)
 
     tk.Button(
-        button_frame, text="Submit", command=submit, bg=BUTTON_COLOR, fg=dark_gray, width=10
+        button_frame, text="Submit", command=submit, bg=BUTTON_COLOR, fg=CREAM, width=10
     ).pack(side="left")
 
     tk.Button(
-        button_frame, text="Cancel", command=cancel, bg=BUTTON_COLOR, fg=dark_gray, width=10
+        button_frame, text="Cancel", command=cancel, bg=BUTTON_COLOR, fg=CREAM, width=10
     ).pack(side="right")
 
     # Wait for the form to close
@@ -106,6 +131,7 @@ def get_float_inputs(prompts):
         raise ValueError("Input cancelled or invalid.")
 
     return inputs
+
 
 def truncate_numbers_in_text(text):
     def truncate_match(match):
@@ -130,11 +156,11 @@ def show_output(result, details):
     rounded_details = truncate_numbers_in_text(details)
     
     # Display result label
-    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
+    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=DARK_BROWN)
     result_label.pack(pady=20)
 
     # Display details label
-    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray, wraplength=400)
+    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=DARK_BROWN, wraplength=400)
     details_label.pack(pady=10)
 
     # Speak after window appears (delay by 500ms)
@@ -374,14 +400,14 @@ def select_state():
     root.geometry("800x650")
 
 
-    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = dark_gray).pack(pady=10)
+    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = DARK_BROWN).pack(pady=10)
 
     tk.Button(
     root,
     text=" Upload Picture",
     command=lambda: handle_selection(0),
     bg=BUTTON_COLOR,
-    fg=FG_COLOR,
+    fg=CREAM,
     font=("Arial", 12),
     relief="flat",
     width=40,
@@ -404,7 +430,7 @@ def select_state():
             text=f"{i}: {state_texts[i]}",
             command=lambda state=i: handle_selection(state),
             bg=BUTTON_COLOR,
-            fg=FG_COLOR,
+            fg=CREAM,
             font=("Arial", 12),
             relief="flat",
             width=40,

@@ -7,16 +7,15 @@ from PIL import Image, ImageTk
 import pyttsx3
 import re
 
-# Define global styles
-BUTTON_HOVER_COLOR = "#a020f0"
-ENTRY_BG_COLOR = "#469db0"
-ENTRY_FG_COLOR = "#2d3233"
-BG_COLOR = "#808080" 
-FG_COLOR = "#2d3233"
-BUTTON_COLOR = "#469db0" 
-BUTTON_HOVER_COLOR = "#43828f" 
-dark_gray = "#2d3233"
-gray = "#808080"
+BG_COLOR = "#FFE4C4" 
+FG_COLOR = "#640f09"
+BUTTON_COLOR = "#640f09" 
+BUTTON_HOVER_COLOR = "#640f09" 
+DARK_BROWN = "#500C07"
+BROWN = "#640f09"
+ENTRY_BG_COLOR = "#640f09"
+ENTRY_FG_COLOR = "#FFE4C4" 
+CREAM = "#FFE4C4"
 
 def on_enter(e):
     """Handle button hover."""
@@ -60,7 +59,7 @@ def get_float_inputs(prompts):
             form_window,
             text=prompt,
             bg=BG_COLOR,
-            fg=dark_gray,
+            fg=DARK_BROWN,
             font=("Arial", 12),
             anchor="w",
         ).grid(row=i, column=0, padx=10, pady=5, sticky="w")
@@ -80,11 +79,11 @@ def get_float_inputs(prompts):
     button_frame.grid(row=len(prompts)+1 , column=0, columnspan=2, pady=10)
 
     tk.Button(
-        button_frame, text="Submit", command=submit, bg=BUTTON_COLOR, fg=dark_gray, width=10
+        button_frame, text="Submit", command=submit, bg=BUTTON_COLOR, fg=CREAM, width=10
     ).pack(side="left")
 
     tk.Button(
-        button_frame, text="Cancel", command=cancel, bg=BUTTON_COLOR, fg=dark_gray, width=10
+        button_frame, text="Cancel", command=cancel, bg=BUTTON_COLOR, fg=CREAM, width=10
     ).pack(side="right")
 
     # Wait for the form to close
@@ -120,11 +119,11 @@ def show_output(result, details):
     rounded_details = truncate_numbers_in_text(details)
 
     # Display result label
-    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
+    result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=DARK_BROWN)
     result_label.pack(pady=20)
 
     # Display details label
-    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=dark_gray, wraplength=400)
+    details_label = tk.Label(root_output, text=details, font=("Arial", 12), bg=BG_COLOR, fg=DARK_BROWN, wraplength=400)
     details_label.pack(pady=10)
 
     # Speak after window appears (delay by 500ms)
@@ -391,14 +390,14 @@ def select_state():
     root.configure(bg=BG_COLOR)
     root.geometry("800x600")
 
-    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = dark_gray).pack(pady=10)
+    tk.Label(root, text="Please select one of the following states:", font=("Arial bold", 14) ,bg= BG_COLOR ,fg = DARK_BROWN).pack(pady=10)
 
     tk.Button(
     root,
     text=" Upload Picture",
     command=lambda: handle_selection(0),
     bg=BUTTON_COLOR,
-    fg=FG_COLOR,
+    fg=CREAM,
     font=("Arial", 12),
     relief="flat",
     width=40,
@@ -420,7 +419,7 @@ def select_state():
             text=f"{i}: {state_texts[i]}",
             command=lambda state=i: handle_selection(state),
             bg=BUTTON_COLOR,
-            fg=FG_COLOR,
+            fg=CREAM,
             font=("Arial", 12),
             relief="flat",
             width=40,
