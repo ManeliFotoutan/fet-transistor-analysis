@@ -107,6 +107,14 @@ def get_float_inputs(prompts):
 
     return inputs
 
+def truncate_numbers_in_text(text):
+    def truncate_match(match):
+        num = match.group()
+        return num[:num.find('.') + 3]  # Keep only two digits after the decimal point
+
+    return re.sub(r"\d+\.\d+", truncate_match, text)
+
+
 def speak_text(text):
     """Convert text to speech."""
     engine = pyttsx3.init()
@@ -119,6 +127,8 @@ def show_output(result, details):
     root_output.title("FET Analysis")
     root_output.configure(bg=BG_COLOR)
 
+    rounded_details = truncate_numbers_in_text(details)
+    
     # Display result label
     result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
     result_label.pack(pady=20)

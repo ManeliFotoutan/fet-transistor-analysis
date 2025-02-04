@@ -5,6 +5,7 @@ import gui_dc_fet_p_channel
 import extract_text
 from PIL import Image, ImageTk
 import pyttsx3
+import re
 
 # Define global styles
 BUTTON_HOVER_COLOR = "#a020f0"
@@ -95,7 +96,13 @@ def get_float_inputs(prompts):
 
     return inputs
 
-import pyttsx3
+def truncate_numbers_in_text(text):
+    def truncate_match(match):
+        num = match.group()
+        return num[:num.find('.') + 3]  # Keep only two digits after the decimal point
+
+    return re.sub(r"\d+\.\d+", truncate_match, text)
+
 
 def speak_text(text):
     """Convert text to speech."""
@@ -109,6 +116,8 @@ def show_output(result, details):
     root_output = tk.Tk()
     root_output.title("FET Analysis")
     root_output.configure(bg=BG_COLOR)
+    
+    rounded_details = truncate_numbers_in_text(details)
 
     # Display result label
     result_label = tk.Label(root_output, text=result, font=("Arial", 14, "bold"), bg=BG_COLOR, fg=dark_gray)
@@ -119,7 +128,7 @@ def show_output(result, details):
     details_label.pack(pady=10)
 
     # Speak after window appears (delay by 500ms)
-    root_output.after(500, lambda: speak_text(f"Result: {result}. {details}."))
+    root_output.after(500, lambda: speak_text(f"Result: {result}. {rounded_details}."))
 
     # Start the main loop for the output window
     root_output.mainloop()
