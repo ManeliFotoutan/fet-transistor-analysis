@@ -139,10 +139,10 @@ def state_1_p_channel(VDD, VGG, RD, IDSS, VPO):
     VDS = calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD)
     if VDS <= VGS - abs(VPO):
         result = "Saturated"
-        details = f"State 1 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
+        details = f"State 1 with VGS = {VGS} V , ID = {ID} mA, VDS = {VDS} V "
     else:
         result = "Not Saturated"
-        details = f"State 1 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
+        details = f"State 1 with VGS = {VGS} V , ID = {ID} mA , VDS = {VDS} V "
     return result, details
 
 def state_2_p_channel(VDD, VGG, RD, K, VT):
@@ -151,10 +151,10 @@ def state_2_p_channel(VDD, VGG, RD, K, VT):
     VDS = calculate_VDS_state_p_channel_1and2_p_channel(VDD, ID, RD)
     if VDS < VGS - VT:
         result = "Saturated"
-        details = f"State 2 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
-    else:
+        details = f"State 2 with VGS = {VGS} V , ID = {ID} mA , VDS = {VDS} V "
+    else: 
         result = "Not Saturated"
-        details = f"State 2 with VGS = {VGS}, ID = {ID}, VDS = {VDS}"
+        details = f"State 2 with VGS = {VGS} V , ID = {ID} mA , VDS = {VDS} V "
     return result, details
 
 def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
@@ -162,10 +162,10 @@ def state_3_p_channel(VDD, RD, RSS, IDSS, VPO):
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD, RSS)   
     if VDS <= VGS - abs(VPO):
         result = "Saturated"
-        details = f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 3 with VGS = {VGS } V , ID = {ID} mA , VDS={VDS} V "
     else:
         result = "Not Saturated"
-        details =  f"State 3 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details =  f"State 3 with VGS = {VGS } V , ID = {ID} mA , VDS={VDS} V "
     return result, details
 
 def state_4_p_channel(VDD, RD, RSS, K, VT):
@@ -173,10 +173,10 @@ def state_4_p_channel(VDD, RD, RSS, K, VT):
     VSD = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VSD > abs(VSG - VT):
         result = "Saturated"
-        details = f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}"
+        details = f"State 4 (p-channel) with VSG ={VSG } V , ID = {ID} mA, VSD = {VSD} V "
     else:
         result = "Not Saturated"
-        details = f"State 4 (p-channel) with VSG ={VSG }, ID={ID}, VSD={VSD}"
+        details = f"State 4 (p-channel) with VSG ={VSG } V , ID={ID} mA , VSD={VSD} V "
     return result, details
 
 def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
@@ -185,10 +185,10 @@ def state_5_p_channel(VDD, RD, RG1, RG2, RSS, IDSS, VPO):
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VDS> VGS - VPO:
         result = "Saturated"
-        details = f"State 5 with VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5 with VGS ={VGS } V , ID={ID} mA , VDS={VDS} V "
     else:
         result = "Not Saturated"
-        details = f"State 5 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5 with Vth={Vth} V ,VGS ={VGS } V , ID={ID} mA , VDS={VDS} V "
     return result, details
 
 def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
@@ -197,10 +197,10 @@ def state_6_p_channel(VDD, RD, RG1, RG2, RSS, K, VT):
     VDS = calculate_VDS_state_p_channel(VDD, ID, RD , RSS)
     if VDS> VGS - VT:
         result = "Saturated"
-        details = f"State 6 with VGS ={VGS }, ID={ID}, VDS={VDS},Vth={Vth}"
+        details = f"State 6 with VGS ={VGS } V , ID={ID} mA , VDS={VDS} V ,Vth = {Vth} V"
     else:
         result = "Not Saturated"
-        details = f"State 5 with Vth={Vth},VGS ={VGS }, ID={ID}, VDS={VDS}"
+        details = f"State 5 with Vth={Vth} V ,VGS ={VGS } V, ID={ID} mA, VDS={VDS} V "
     return result, details
 
 def state_7_p_channel(VDD, RD, RG, K, VT):
@@ -208,9 +208,9 @@ def state_7_p_channel(VDD, RD, RG, K, VT):
     VGS = VDS
 
     if VDS >= VGS - abs(VT):
-        result = "Saturated"
-        details = f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}"
+        result = "Saturated" 
+        details = f"State 7 with VGS = {VGS:.2f} V , ID = {ID:.6f} mA , VDS = {VDS:.2f} V "
     else:
         result = "Operating in the linear region or invalid. Try again!"
-        details = f"State 7 with VGS = {VGS:.2f}, ID = {ID:.6f}, VDS = {VDS:.2f}"
+        details = f"State 7 with VGS = {VGS:.2f} V , ID = {ID:.6f} mA , VDS = {VDS:.2f} V "
     return result, details

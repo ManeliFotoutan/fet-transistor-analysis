@@ -382,7 +382,7 @@ def select_state():
                 prompts = [
                     "Enter VDD (Supply Voltage) in 'V': ",
                     "Enter RD (Drain Resistance) in 'KΩ': ",
-                    "Enter RG (Gate Resistance) in : ",
+                    "Enter RG (Gate Resistance) in 'KΩ': ",
                     "Enter IDSS (Gate-Source Leakage Current) in 'mA': ",
                     "Enter VPO (Pinch-off Voltage) in 'V': "
                 ]
