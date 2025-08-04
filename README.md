@@ -21,11 +21,38 @@ The tool includes both **command-line** and **graphical user interface (GUI)** m
 - Modular code structure for easy extension or integration.
 
 ---
+##  Image Processing Feature
+
+This project includes basic **image processing capabilities** using the `pytesseract` OCR engine and the Python Imaging Library (PIL). These are used to **automatically extract values from schematic circuit images**, such as voltage and resistance values.
+
+This allows the user to:
+
+- Upload or select an image of a circuit.
+- Automatically extract key electrical values from the image.
+- Use the extracted values for simulations in either terminal or GUI mode.
+
+###  OCR Functions Provided:
+
+| Function Name         | Extracts From Image                          |
+|----------------------|----------------------------------------------|
+| `simple_circuit()`    | VDD, VGG, RD                                 |
+| `circuit()`           | VDD, RD, RS                                  |
+| `complex_circuit()`   | VDD, RD, RG1, RG2, RS                         |
+| `baiasing_circuit()`  | VDD, RD, RG                                   |
+
+Each function uses regular expressions and Tesseract OCR to extract floating-point numbers (e.g., `12 V`, `4.7 k`) and return them in usable format for the main simulation engine.
+
+Example output from an image might be:
+
+```text
+VDD: 12.0 V, RD: 4.7 k, RS: 1.5 k
+```
+---
 ##  How to Run
 
 ###  1. Install Requirements
 
-Make sure you have Python 3.8+ installed. Then, install dependencies:
+Make sure you have Python 3.8+ installed. Then, install dependencies:```
 
 ```bash
 pip install numpy scipy sympy tkinter
