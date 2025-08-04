@@ -4,8 +4,6 @@ This Python project provides a comprehensive tool to simulate, calculate, and vi
 
 The tool includes both **command-line** and **graphical user interface (GUI)** modes, allowing users to either interact directly via terminal or use a GUI for visual simulations and input handling. The GUI also includes image processing functionality for enhanced educational or documentation purposes.
 
----
-
 ##  Features
 
 - Analysis of **7 different states** for both N-channel and P-channel FETs.
@@ -20,7 +18,6 @@ The tool includes both **command-line** and **graphical user interface (GUI)** m
 - Built-in **image display** for schematic or simulation diagrams.
 - Modular code structure for easy extension or integration.
 
----
 ##  Image Processing Feature
 
 This project includes basic **image processing capabilities** using the `pytesseract` OCR engine and the Python Imaging Library (PIL). These are used to **automatically extract values from schematic circuit images**, such as voltage and resistance values.
@@ -56,7 +53,7 @@ Also make sure Tesseract OCR is installed on your machine. On Ubuntu:
 sudo apt install tesseract-ocr
 ```
 On Windows, download and install from: https://github.com/tesseract-ocr/tesseract
----
+
 ##  How to Run
 
 ###  1. Install Requirements
