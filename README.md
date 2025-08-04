@@ -47,6 +47,15 @@ Example output from an image might be:
 ```text
 VDD: 12.0 V, RD: 4.7 k, RS: 1.5 k
 ```
+### Dependencies for Image Processing
+```bash
+pip install pytesseract pillow
+```
+Also make sure Tesseract OCR is installed on your machine. On Ubuntu:
+```bash
+sudo apt install tesseract-ocr
+```
+On Windows, download and install from: https://github.com/tesseract-ocr/tesseract
 ---
 ##  How to Run
 
